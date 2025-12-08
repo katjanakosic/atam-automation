@@ -1,0 +1,76 @@
+Researcher Requirements:
+    View a finding aid for a specific collection/resource.
+
+Application Administrator Requirements:
+    Reset a user's password.
+    Assign users to an advanced data entry role and enforce appropriate permissions.
+    Configure the help center URL and topic mappings.
+
+User Requirements:
+    Backend changes for managing enum lists.
+    Frontend changes for managing enum lists.
+    Backend changes to support loading enum value lists from the database.
+    Backend changes for bulk updating one enum value to another.
+    Add additional properties for repositories.
+    Authenticate using LDAP.
+    Authenticate locally.
+    Log in.
+    Access links to contextual help.
+
+Archivist Requirements:
+    Import EAD files exported by Archon.
+    Import EAD files exported by the Archivists' Toolkit.
+    Assign a unique identifier to a resource component.
+    Associate a standard identifier string with a subject heading.
+    Understand and diagnose import errors.
+    Import accessions data in CSV format.
+    Import resources from MARCXML records.
+    Import agent information from EAC-CPF records.
+    Export agent records as EAC-CPF.
+    Import only agent and subject information from MARCXML records.
+    Add notes to other record types.
+    Add administrative data about the archival description and finding aid-related data to a top-level resource.
+    Assign a level of description to a resource or resource component, with the option to specify another value if not predefined.
+    Search within a repository for resource, accession, and digital object records.
+    Create and edit a collection management subrecord.
+    Rearrange the resource and/or digital object hierarchy using keyboard-based navigation.
+    Rearrange the resource description hierarchy by dragging an archival object to a different position.
+    Indicate an agent as the creator, source, or subject of an accession, resource, or resource component.
+    Export a description as EAD.
+    Create and edit event records.
+    Manage digital objects.
+    Associate an instance with a resource and/or resource component.
+    Avoid overwriting someone else's changes to a record being edited.
+    Create and edit rights management statements.
+    Upload an EAD for import from within the frontend application.
+    Import EAD data.
+    Specify the source for a name form of an agent and manage sources.
+    Create and edit agent records.
+    Create and edit a resource record.
+    Associate a subject record with a resource description.
+    Associate an instance with a container.
+    Assign location information to a container.
+
+Migration Specialist Requirements:
+    Store AT or Archon source record IDs in each ASpace record to support data migration integrity testing.
+
+Administrator Requirements:
+    Create a new user account for someone else.
+    Declare that a user has the repository manager role for a given repository.
+
+System Administrator Requirements:
+    Control the location of the demo database and ensure it is backed up.
+
+Repository Manager Requirements:
+    Create, update, and delete archival descriptions in the repository.
+    Create, update, and delete any records in the repository.
+
+Developer Requirements:
+    Use a configuration not prepackaged within a built version of the application.
+    Develop a custom importer.
+
+Basic Data Entry User Requirements:
+    Create and update basic archival description information.
+
+ReadOnly User Requirements:
+    View archival descriptions in the repository.

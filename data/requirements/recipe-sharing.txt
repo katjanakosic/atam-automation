@@ -1,0 +1,9 @@
+Recipe Sharing Platform
+
+The system is designed to be a recipe sharing platform to manage recipes, users, and recipe categories.
+
+Recipes should have attributes such as recipe ID, title, description, ingredients, and cooking instructions. Additionally, recipes may require attributes for categorization (e.g., cuisine type, meal type) and recipe creator.
+Users' profiles should encompass attributes like user ID, username, email address, and profile picture. Furthermore, user profiles may require attributes for tracking user activity (e.g., number of recipes shared, number of followers).
+Recipe categories should include attributes such as category ID, category name, and description. Additionally, categories may require attributes for specifying subcategories and hierarchical organization.
+Recipe sharing functionalities should allow users to share and discover recipes, with attributes for recipe sharing date, likes, and comments. Furthermore, sharing records may require attributes for tracking sharing history and popularity rankings.
+Search functionalities should enable users to search for recipes based on keywords, ingredients, or categories, with attributes for search queries, search results, and search filters.

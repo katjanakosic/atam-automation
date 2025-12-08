@@ -1,0 +1,86 @@
+The Meeting Scheduler System: Preliminary Definition
+
+Foreword
+This preliminary description is deliberately intended to be sketchy and unprecise. Acquisition, formalization and validation processes are needed to complete it and lift the many shadow areas.
+
+A number of features of the Meeting Scheduler System were inspired from various experiences in organizing meetings (faculty meetings, ESPRIT project meetings, Program Committee meetings, etc.) and from various discussions with Steve Fickas' group at the University of Oregon.
+
+Scheduling Meetings: Domain Theory
+Meetings are typically arranged in the following way. A meeting initiator asks all potential meeting attendees for the following information based on their personal agenda:
+
+    a set of dates on which they cannot attend the meeting (hereafter referred as exclusion set);
+
+    a set of dates on which they would prefer the meeting to take place (hereafter referred as preference set).
+
+A meeting date is defined by a pair (calendar date, time period). The exclusion and preference sets are contained in some time interval prescribed by the meeting initiator (hereafter referred as date range).
+
+The initiator also asks active participants to provide any special equipment requirements on the meeting location (e.g., overhead-projector, workstation, network connection, telephones, etc.); he/she may also ask important participants to state preferences about the meeting location.
+
+The proposed meeting date should belong to the stated date range and to none of the exclusion sets; furthermore it should ideally belong to as many preference sets as possible. A date conflict occurs when no such date can be found. A conflict is strong when no date can be found within the date range and outside all exclusion sets; it is weak when dates can be found within the date range and outside all exclusion sets, but no date can be found at the intersection of all preference sets. Conflicts can be resolved in several ways:
+
+    the initiator extends the date range;
+
+    some participants remove some dates from their exclusion set;
+
+    some participants withdraw from the meeting;
+
+    some participants add some new dates to their preference set.
+
+A meeting room must be available at the selected meeting date. It should meet the equipment requirements; furthermore it should ideally belong to one of the locations preferred by as many important participants as possible. A new round of negotiation may be required when no such room can be found.
+
+The meeting initiator can be one of the participants or some representative (e.g., a secretary).
+
+System Requirements
+The purpose of the meeting scheduler system is to support the organization of meetings - that is, to determine, for each meeting request, a meeting date and location so that most of the intended participants will effectively participate. The meeting date and location should thus be as convenient as possible to all participants. Information about the meeting should also be made available as early as possible to all potential participants. The intended system should considerably reduce the amount of overhead usually incurred in organizing meetings where potential attendees are distributed over many different places. On another hand, the system should reflect as closely as possible the way meetings are typically managed (see the domain theory above).
+
+The system should assist users in the following activities.
+
+    Plan meetings under the constraints expressed by participants
+
+    Replan a meeting dynamically to support as much flexibility as possible. On one hand, participants should be allowed to modify their exlusion set, preference set and/or preferred location before a meeting date/location is proposed. On the other hand, it should be possible to take some external constraints into account after a date and location have been proposed - e.g., due to the need to accommodate a more important meeting. The original meeting date or location may then need to be changed; sometimes the meeting may even be cancelled. In all cases some bound on replanning should be set up.
+
+    Support conflict resolution according to resolution policies stated by the client.
+
+    Manage all the interactions among participants required during the organization of the meeting - to communicate requests, to get replies even from participants not reacting promptly, to support the negotiation and conflict resolution processes, to make participants aware of what's going on during the planning process, to keep participants informed about schedules and their changes, to make them confident about the reliability of the communications, etc.
+
+    Keep the amount of interaction among participants (e.g., number and length of messages, amount of negotiation required) as small as possible.
+
+The meeting scheduler system must in general handle several meeting requests in parallel. Meeting requests can be competing by overlapping in time or space. Concurrency must thus be managed.
+
+The following aspects should also be taken into account.
+
+    The system should accomodate decentralized requests; any authorized user should be able to request a meeting independently of his whereabouts.
+
+    Physical constraints may not be broken - e.g., a person may not be at two different places at the same time, a meeting room may not be alloc
+
+    The system should provide an appropriate level of performance, for example:
+
+        the elapsed time between the submission of a meeting request and the determination of the corresponding meeting date/location should be as small as possible;
+
+        the elapsed time between the determination of a meeting date/location and the communication of this information to all participants concerned should be as small as possible;
+
+        a lower bound should be fixed between the time at which the meeting date is determined and the time at which the meeting is actually taking place.
+
+    Privacy rules should be enforced; a non-privileged participant should not be aware of constraints stated by other participants.
+
+    The system should be usable by non-experts.
+
+    The system should be customizable to professional as well as private meetings. These two modes of use are characterized by different restrictions on the time periods that may be allocated (e.g., meetings during office hours, private activities during leisure time).
+
+    The system should be flexible enough to accommodate evolving data - e.g., the sets of concerned participants may be varying, the address at which a participant can be reached may be varying, etc.
+
+    The system should be easily extendable to accommodate the following typical variations:
+
+        handling of explicit status and priorities among participants;
+
+        handling of explicit priorities among dates in preference sets;
+
+        handling of explicit dependencies between meeting date and meeting location;
+
+        participation through delegation - a participant may ask another person to represent him/her at the meeting;
+
+        partial attendance - a participant can only attend part of the meeting;
+
+        variations in date formats, address formats, interface language, etc.
+
+        partial reuse in other contexts -e.g., to help establish course schedules.

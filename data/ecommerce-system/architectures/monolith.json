@@ -1,0 +1,195 @@
+{
+  "components": [
+    {
+      "name": "Frontend",
+      "type": "Application",
+      "responsibilities": [
+        "User Interaction",
+        "Client",
+        "Business Process"
+      ],
+      "technologies": [
+        "react.js"
+      ],
+      "interactsWith": [
+        "Load Balancer"
+      ]
+    },
+    {
+      "name": "Load Balancer",
+      "type": "Application",
+      "responsibilities": [
+        "Horizontal Scaling"
+      ],
+      "technologies": [
+        "AWS ELB"
+      ],
+      "interactsWith": [
+        "Frontend",
+        "Payment Gateway",
+        "Inventory Management",
+        "Product Catalog",
+        "Order Processing",
+        "User Management",
+        "Authorization Service"
+      ]
+    },
+    {
+      "name": "Payment Gateway",
+      "type": "Spring Bean",
+      "responsibilities": [
+        "Payment processing, including integration with third-party gateways"
+      ],
+      "technologies": [
+        "Spring Boot",
+        "Java"
+      ],
+      "interactsWith": [
+        "Load Balancer",
+        "Database",
+        "External Payment Provider"
+      ]
+    },
+    {
+      "name": "Inventory Management",
+      "type": "Spring Bean",
+      "responsibilities": [
+        "Track Stock Levels",
+        "Update stock from order events",
+        "Notify low stock",
+        "Provide stock APIs"
+      ],
+      "technologies": [
+        "Spring Boot",
+        "Java"
+      ],
+      "interactsWith": [
+        "Load Balancer",
+        "Database",
+        "External Inventory System"
+      ]
+    },
+    {
+      "name": "Product Catalog",
+      "type": "Spring Bean",
+      "responsibilities": [
+        "Managing the Product Catalog",
+        "Browsing and Searching"
+      ],
+      "technologies": [
+        "Spring Boot",
+        "Java"
+      ],
+      "interactsWith": [
+        "Load Balancer",
+        "Database",
+        "Authorization Service"
+      ]
+    },
+    {
+      "name": "Order Processing",
+      "type": "Spring Bean",
+      "responsibilities": [
+        "Shopping Cart Operations",
+        "Order Placement"
+      ],
+      "technologies": [
+        "Spring Boot",
+        "Java"
+      ],
+      "interactsWith": [
+        "Load Balancer",
+        "Database",
+        "Authorization Service"
+      ]
+    },
+    {
+      "name": "User Management",
+      "type": "Spring Bean",
+      "responsibilities": [
+        "Profile Management"
+      ],
+      "technologies": [
+        "Spring Boot",
+        "Java"
+      ],
+      "interactsWith": [
+        "Load Balancer",
+        "Database",
+        "Authorization Service"
+      ]
+    },
+    {
+      "name": "Authorization Service",
+      "type": "Spring Bean",
+      "responsibilities": [
+        "Credential Authentication",
+        "Authorization"
+      ],
+      "technologies": [
+        "Spring Boot",
+        "Java"
+      ],
+      "interactsWith": [
+        "Load Balancer",
+        "Database",
+        "Product Catalog",
+        "Order Processing",
+        "User Management"
+      ]
+    },
+    {
+      "name": "Database Cluster",
+      "type": "SQL Database",
+      "responsibilities": [
+        "Data Storage",
+        "Data Retrieval"
+      ],
+      "technologies": [
+        "PostgreSQL"
+      ],
+      "interactsWith": [
+        "Payment Gateway",
+        "Inventory Management",
+        "Product Catalog",
+        "Order Processing",
+        "User Management",
+        "Authorization Service"
+      ]
+    }
+  ],
+  "infrastructure": [
+    {
+      "environment": [
+        "Tomcat"
+      ],
+      "components": [
+        "Frontend"
+      ]
+    },
+    {
+      "environment": [
+        "AWS"
+      ],
+      "components": [
+        "Load Balancer",
+        "Spring Boot Application",
+        "Database Cluster"
+      ]
+    },
+    {
+      "environment": [
+        "AWS",
+        "Spring Boot Application"
+      ],
+      "components": [
+        "Payment Gateway",
+        "Inventory Management",
+        "Product Catalog",
+        "Order Processing",
+        "User Management",
+        "Authorization Service"
+      ]
+    }
+  ]
+}
