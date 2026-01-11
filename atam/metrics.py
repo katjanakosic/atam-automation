@@ -19,7 +19,7 @@ def compute_component_sensitivities(mappings: List[ScenarioArchitectureMapping])
     bucket: Dict[Tuple[str, str, str], List[float]] = defaultdict(list)
 
     for mapping in mappings:
-        architecture_id = mapping.architecture_id
+        architecture_id = mapping.architectureId
         attribute = mapping.qualityAttribute
         for impact in mapping.componentImpacts:
             for effect in impact.effects:
