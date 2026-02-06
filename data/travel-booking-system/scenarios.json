@@ -1,0 +1,42 @@
+[
+  {
+    "id": "TRAVEL-S1",
+    "name": "Search Spike During Holiday Promotion",
+    "qualityAttribute": "Scalability",
+    "environment": "Production, marketing promotion",
+    "stimulus": "Users perform flight+hotel searches at 20x normal rate for 30 minutes",
+    "response": "Search remains available; p95 search response time < 1.2s; error rate < 1%"
+  },
+  {
+    "id": "TRAVEL-S2",
+    "name": "Prevent Double Booking Under Concurrency",
+    "qualityAttribute": "Reliability",
+    "environment": "Production, high concurrency",
+    "stimulus": "Multiple users attempt to book the last remaining seat/room simultaneously",
+    "response": "System prevents double booking using reservation/locking; confirmed bookings are consistent within 5 seconds"
+  },
+  {
+    "id": "TRAVEL-S3",
+    "name": "Partner API Outage During Booking",
+    "qualityAttribute": "Availability",
+    "environment": "Production, partial dependency outage",
+    "stimulus": "Airline partner API intermittently fails while payment is successful",
+    "response": "Booking is recovered via retries/compensation; user sees correct status; no orphaned charges"
+  },
+  {
+    "id": "TRAVEL-S4",
+    "name": "Add New Payment Provider",
+    "qualityAttribute": "Modifiability",
+    "environment": "CI/CD pipeline",
+    "stimulus": "Business adds a new payment provider and routing rules by country",
+    "response": "Payment integration is added with minimal impact on booking logic and deployed within 2 days"
+  },
+  {
+    "id": "TRAVEL-S5",
+    "name": "Fraud Detection and Audit for Bookings",
+    "qualityAttribute": "Security",
+    "environment": "Production, compliance",
+    "stimulus": "Security team requests audit trail for booking creation, payment attempts, and account changes",
+    "response": "Actions are authenticated and authorized; audit logs are complete and retained for 12 months"
+  }
+]

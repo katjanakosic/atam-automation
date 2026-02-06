@@ -1,0 +1,149 @@
+{
+  "id": "travel-layered-soa",
+  "domain": "travel-booking",
+  "architecturePattern": "Layered N-tier + SOA Integration Hub",
+  "patternCharacteristics": {
+    "advantages": [
+      "Straightforward architecture and operations",
+      "Centralized consistency for booking state",
+      "Simpler governance for partner integrations via an integration hub"
+    ],
+    "disadvantages": [
+      "Scales less flexibly for high search traffic",
+      "Integration hub can become a bottleneck",
+      "Harder to isolate failures between modules"
+    ]
+  },
+  "components": [
+    {
+      "name": "WebMobileUI",
+      "type": "Application",
+      "responsibilities": ["User UI for search and booking", "Account management"],
+      "technologies": ["React", "Mobile App"],
+      "interactsWith": ["ApplicationAPI"]
+    },
+    {
+      "name": "ApplicationAPI",
+      "type": "Application Layer",
+      "responsibilities": ["REST APIs", "Input validation", "Session handling"],
+      "technologies": ["Java", "Spring Boot"],
+      "interactsWith": ["BookingDomain", "SearchModule", "PaymentModule", "SecurityModule", "AuditLogging"]
+    },
+    {
+      "name": "BookingDomain",
+      "type": "Domain Layer",
+      "responsibilities": ["Booking state machine", "Reservation logic", "Consistency rules"],
+      "technologies": ["Java"],
+      "interactsWith": ["BookingDB", "IntegrationHub", "PaymentModule", "AuditLogging"]
+    },
+    {
+      "name": "SearchModule",
+      "type": "Module",
+      "responsibilities": ["Search orchestration", "Cache management", "Result shaping"],
+      "technologies": ["Java"],
+      "interactsWith": ["SearchCache", "IntegrationHub", "SearchIndex"]
+    },
+    {
+      "name": "PaymentModule",
+      "type": "Module",
+      "responsibilities": ["Payment authorization/capture", "Provider routing", "Idempotency"],
+      "technologies": ["Java", "Idempotency keys"],
+      "interactsWith": ["PaymentDB", "PaymentGateway", "AuditLogging"]
+    },
+    {
+      "name": "SecurityModule",
+      "type": "Module",
+      "responsibilities": ["AuthN/AuthZ", "JWT validation", "Role policies"],
+      "technologies": ["Spring Security", "OIDC"],
+      "interactsWith": ["IdentityProvider", "AuditLogging"]
+    },
+    {
+      "name": "IntegrationHub",
+      "type": "Integration Layer",
+      "responsibilities": ["Partner API adapters", "Retries/circuit breakers", "Normalization"],
+      "technologies": ["Apache Camel"],
+      "interactsWith": ["AirlinePartnerAPI", "HotelPartnerAPI", "BookingDomain", "SearchModule"]
+    },
+    {
+      "name": "AuditLogging",
+      "type": "Cross-cutting Component",
+      "responsibilities": ["Audit trail for booking and payments", "Retention policies"],
+      "technologies": ["Append-only logs", "WORM storage"],
+      "interactsWith": ["AuditLogStore", "SecurityModule", "BookingDomain", "PaymentModule"]
+    },
+    {
+      "name": "BookingDB",
+      "type": "SQL Database",
+      "responsibilities": ["Booking state and transactional consistency"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["BookingDomain"]
+    },
+    {
+      "name": "PaymentDB",
+      "type": "SQL Database",
+      "responsibilities": ["Payment records and idempotency keys"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["PaymentModule"]
+    },
+    {
+      "name": "SearchCache",
+      "type": "Cache",
+      "responsibilities": ["Cache popular searches", "Reduce partner calls"],
+      "technologies": ["Redis"],
+      "interactsWith": ["SearchModule"]
+    },
+    {
+      "name": "SearchIndex",
+      "type": "Search",
+      "responsibilities": ["Fast search query index"],
+      "technologies": ["Elasticsearch"],
+      "interactsWith": ["SearchModule"]
+    },
+    {
+      "name": "PaymentGateway",
+      "type": "External Adapter",
+      "responsibilities": ["Integrate payment providers", "Retries and circuit breakers"],
+      "technologies": ["Payment SDK"],
+      "interactsWith": ["PaymentModule", "ExternalPaymentProviders"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Log Storage",
+      "responsibilities": ["Immutable retention for audit logs"],
+      "technologies": ["S3 WORM / OpenSearch"],
+      "interactsWith": ["AuditLogging"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "External System",
+      "responsibilities": ["Authentication source"],
+      "technologies": ["Keycloak / Cognito"],
+      "interactsWith": ["SecurityModule"]
+    },
+    {
+      "name": "AirlinePartnerAPI",
+      "type": "External System",
+      "responsibilities": ["Flight availability and booking"],
+      "technologies": ["Partner API"],
+      "interactsWith": ["IntegrationHub"]
+    },
+    {
+      "name": "HotelPartnerAPI",
+      "type": "External System",
+      "responsibilities": ["Hotel availability and booking"],
+      "technologies": ["Partner API"],
+      "interactsWith": ["IntegrationHub"]
+    },
+    {
+      "name": "ExternalPaymentProviders",
+      "type": "External System",
+      "responsibilities": ["Payment processing"],
+      "technologies": ["Stripe/Adyen/etc."],
+      "interactsWith": ["PaymentGateway"]
+    }
+  ],
+  "infrastructure": [
+    { "name": "AppServerCluster", "type": "Compute", "details": "Runs ApplicationAPI with horizontal scaling" },
+    { "name": "DBCluster", "type": "Database", "details": "PostgreSQL HA with failover" }
+  ]
+}

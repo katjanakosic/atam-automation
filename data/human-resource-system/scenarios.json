@@ -1,0 +1,42 @@
+[
+  {
+    "id": "HRM-S1",
+    "name": "Payroll Calculation Peak Load",
+    "qualityAttribute": "Performance",
+    "environment": "Production, end-of-month payroll run",
+    "stimulus": "HR triggers payroll calculation for 10,000 employees, including overtime and deductions",
+    "response": "Payroll calculation completes within 10 minutes and remains responsive for HR users (p95 UI actions < 800ms)"
+  },
+  {
+    "id": "HRM-S2",
+    "name": "Sensitive Data Access Audit",
+    "qualityAttribute": "Security",
+    "environment": "Production, compliance audit (GDPR/ISO27001)",
+    "stimulus": "Auditor requests evidence of access controls and logs for employee personal data (salary, address, performance reviews)",
+    "response": "All access is authenticated and authorized by role; audit logs are tamper-evident and retained for 12 months"
+  },
+  {
+    "id": "HRM-S3",
+    "name": "Onboarding Workflow Change",
+    "qualityAttribute": "Modifiability",
+    "environment": "Normal operations, HR policy update",
+    "stimulus": "Company introduces a new onboarding step: equipment approval by department manager with SLA tracking",
+    "response": "Workflow change is implemented and deployed within 2 days without breaking existing onboarding cases"
+  },
+  {
+    "id": "HRM-S4",
+    "name": "HR System Integration Import",
+    "qualityAttribute": "Interoperability",
+    "environment": "Production, nightly batch integration",
+    "stimulus": "System imports employee updates from external identity provider and time-tracking system (CSV/API), including corrections",
+    "response": "Imports complete reliably, conflicts are detected and reported, and data is consistent within 30 minutes"
+  },
+  {
+    "id": "HRM-S5",
+    "name": "High Availability During Review Season",
+    "qualityAttribute": "Availability",
+    "environment": "Production, annual performance review period",
+    "stimulus": "Managers and employees concurrently access performance review forms while a node crashes",
+    "response": "Service remains available with failover; no data loss; user sessions recover within 60 seconds"
+  }
+]

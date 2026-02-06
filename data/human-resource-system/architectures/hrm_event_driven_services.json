@@ -1,0 +1,149 @@
+{
+  "id": "hrm-event-driven-services",
+  "domain": "hrm",
+  "architecturePattern": "Event-Driven Services (Workflow Orchestration + Saga)",
+  "patternCharacteristics": {
+    "advantages": [
+      "Independent scaling for heavy workloads (payroll, integrations)",
+      "Clear separation of bounded contexts",
+      "Resilient integration via asynchronous messaging"
+    ],
+    "disadvantages": [
+      "Operational complexity (messaging, observability)",
+      "Distributed consistency requires careful design",
+      "More complex debugging across services"
+    ]
+  },
+  "components": [
+    {
+      "name": "WebUI",
+      "type": "Application",
+      "responsibilities": ["HR/Manager/Employee UI", "Form rendering"],
+      "technologies": ["React"],
+      "interactsWith": ["APIGateway"]
+    },
+    {
+      "name": "APIGateway",
+      "type": "Gateway",
+      "responsibilities": ["Routing", "Rate limiting", "Central auth enforcement"],
+      "technologies": ["Kong / NGINX"],
+      "interactsWith": ["AuthService", "EmployeeService", "PerformanceService", "WorkflowService"]
+    },
+    {
+      "name": "AuthService",
+      "type": "Service",
+      "responsibilities": ["OIDC integration", "Role-based authorization", "Token issuance"],
+      "technologies": ["Node.js", "OIDC"],
+      "interactsWith": ["IdentityProvider", "AuditService"]
+    },
+    {
+      "name": "EmployeeService",
+      "type": "Service",
+      "responsibilities": ["Employee master data", "Org structure APIs"],
+      "technologies": ["Java"],
+      "interactsWith": ["EmployeeDB", "EventBus", "AuditService"]
+    },
+    {
+      "name": "PayrollService",
+      "type": "Service",
+      "responsibilities": ["Payroll rules", "Batch payroll computation", "Payslip generation"],
+      "technologies": ["Java"],
+      "interactsWith": ["PayrollDB", "EventBus", "Cache", "AuditService"]
+    },
+    {
+      "name": "PerformanceService",
+      "type": "Service",
+      "responsibilities": ["Review cycles", "Feedback workflows"],
+      "technologies": ["Go"],
+      "interactsWith": ["PerformanceDB", "EventBus", "AuditService"]
+    },
+    {
+      "name": "WorkflowService",
+      "type": "Orchestrator",
+      "responsibilities": ["Orchestrate onboarding workflows", "Manage approvals and SLAs", "Saga coordination"],
+      "technologies": ["Camunda / Temporal"],
+      "interactsWith": ["EventBus", "NotificationService", "EmployeeService", "AuditService"]
+    },
+    {
+      "name": "IntegrationWorker",
+      "type": "Worker",
+      "responsibilities": ["Consume external updates", "Transform and publish events", "Conflict detection"],
+      "technologies": ["Python"],
+      "interactsWith": ["EventBus", "IdentityProvider", "TimeTrackingSystem", "AuditService"]
+    },
+    {
+      "name": "AuditService",
+      "type": "Service",
+      "responsibilities": ["Central audit event collection", "Tamper-evident storage", "Retention policies"],
+      "technologies": ["OpenSearch", "WORM storage"],
+      "interactsWith": ["AuditLogStore", "EventBus"]
+    },
+    {
+      "name": "EventBus",
+      "type": "Messaging",
+      "responsibilities": ["Event distribution between services", "Decouple producers/consumers"],
+      "technologies": ["Kafka"],
+      "interactsWith": ["EmployeeService", "PayrollService", "PerformanceService", "WorkflowService", "IntegrationWorker", "AuditService"]
+    },
+    {
+      "name": "EmployeeDB",
+      "type": "Database",
+      "responsibilities": ["Employee data storage"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["EmployeeService"]
+    },
+    {
+      "name": "PayrollDB",
+      "type": "Database",
+      "responsibilities": ["Payroll data and payslips"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["PayrollService"]
+    },
+    {
+      "name": "PerformanceDB",
+      "type": "Database",
+      "responsibilities": ["Performance review data"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["PerformanceService"]
+    },
+    {
+      "name": "Cache",
+      "type": "Cache",
+      "responsibilities": ["Cache reference data used in payroll calculations"],
+      "technologies": ["Redis"],
+      "interactsWith": ["PayrollService"]
+    },
+    {
+      "name": "NotificationService",
+      "type": "Service",
+      "responsibilities": ["Send emails/notifications for onboarding and reviews"],
+      "technologies": ["SMTP", "Worker"],
+      "interactsWith": ["WorkflowService"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "External System",
+      "responsibilities": ["Authentication provider and provisioning source"],
+      "technologies": ["Azure AD / Keycloak"],
+      "interactsWith": ["AuthService", "IntegrationWorker"]
+    },
+    {
+      "name": "TimeTrackingSystem",
+      "type": "External System",
+      "responsibilities": ["Absence and time data source"],
+      "technologies": ["External API"],
+      "interactsWith": ["IntegrationWorker"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Log Storage",
+      "responsibilities": ["Retention and immutability for audit logs"],
+      "technologies": ["OpenSearch / S3 WORM"],
+      "interactsWith": ["AuditService"]
+    }
+  ],
+  "infrastructure": [
+    { "name": "KubernetesCluster", "type": "Compute", "details": "Runs services with horizontal autoscaling" },
+    { "name": "ObservabilityStack", "type": "Monitoring", "details": "Central logs, traces, metrics (OTel)" }
+  ]
+}

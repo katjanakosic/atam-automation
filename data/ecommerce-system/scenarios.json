@@ -1,133 +1,152 @@
 [
   {
+    "id": "ECO-S01",
     "name": "User Authentication Reliability",
-    "attribute": "Reliability",
+    "qualityAttribute": "Reliability",
     "environment": "The system operates in a typical production environment under normal and peak usage conditions.",
     "stimulus": "A sudden spike in user authentication requests due to an external event (e.g., a promotional campaign), coupled with the unavailability of one authentication component or service.",
     "response": "The system ensures uninterrupted authentication services by rerouting requests to backup components or services, maintaining an average response time of under 2 seconds, and ensuring at least 99% of requests are processed successfully."
   },
   {
+    "id": "ECO-S02",
     "name": "Payment API Protection",
-    "attribute": "Security",
+    "qualityAttribute": "Security",
     "environment": "Production environment under normal load",
     "stimulus": "An external attacker sends malicious input (e.g., script injection) to the payment API endpoint",
     "response": "The system sanitizes and rejects the input, logs the attempt, and does not expose any sensitive data"
   },
   {
+    "id": "ECO-S03",
     "name": "Unauthorized Access Attempt",
-    "attribute": "Security",
+    "qualityAttribute": "Security",
     "environment": "Production environment",
     "stimulus": "An unauthenticated user attempts to access the order history endpoint",
     "response": "The system denies access with a 401 Unauthorized response and logs the attempt"
   },
   {
+    "id": "ECO-S04",
     "name": "Peak Load Checkout",
-    "attribute": "Performance",
+    "qualityAttribute": "Performance",
     "environment": "Production during Black Friday peak traffic",
     "stimulus": "10,000 users concurrently initiate checkout operations",
     "response": "The system processes 95% of checkout requests within 2 seconds and maintains data consistency"
   },
   {
+    "id": "ECO-S05",
     "name": "Product Browsing",
-    "attribute": "Performance",
+    "qualityAttribute": "Performance",
     "environment": "Production under normal daily load",
     "stimulus": "A user navigates to the product listing page",
     "response": "The system loads and renders product data in the frontend within 1.5 seconds"
   },
   {
+    "id": "ECO-S06",
     "name": "Traffic Surge",
-    "attribute": "Scalability",
+    "qualityAttribute": "Scalability",
     "environment": "Cloud-based production environment",
     "stimulus": "Traffic increases rapidly from 500 to 10,000 concurrent users due to a marketing campaign",
     "response": "The system auto-scales backend and frontend services, maintaining performance without manual intervention"
   },
   {
+    "id": "ECO-S07",
     "name": "Inventory Sync from Multiple Suppliers",
-    "attribute": "Scalability",
+    "qualityAttribute": "Scalability",
     "environment": "Production environment during supplier synchronization batch",
     "stimulus": "50 external suppliers push stock updates to the inventory sync API simultaneously",
     "response": "The system processes all updates concurrently and updates internal stock records within 10 seconds"
   },
   {
+    "id": "ECO-S08",
     "name": "Inventory Race Condition",
-    "attribute": "Reliability",
+    "qualityAttribute": "Reliability",
     "environment": "Production under moderate to high traffic",
     "stimulus": "100 users attempt to purchase the last 5 units of a product at the same time",
     "response": "The system prevents overselling by handling requests atomically and accurately reflects inventory state"
   },
   {
+    "id": "ECO-S09",
     "name": "Order Processing Failure",
-    "attribute": "Reliability",
+    "qualityAttribute": "Reliability",
     "environment": "Production with transient infrastructure issues",
     "stimulus": "A database write fails during order placement",
     "response": "The system retries the operation or rolls back changes to avoid inconsistent order states"
   },
   {
+    "id": "ECO-S10",
     "name": "Service Crash Recovery",
-    "attribute": "Availability",
+    "qualityAttribute": "Availability",
     "environment": "Production environment",
     "stimulus": "A backend microservice crashes unexpectedly",
     "response": "The system detects the failure, restarts the service automatically, and restores availability within 30 seconds"
   },
   {
+    "id": "ECO-S11",
     "name": "Cloud Region Outage",
-    "attribute": "Availability",
+    "qualityAttribute": "Availability",
     "environment": "Production with multi-region cloud deployment",
     "stimulus": "The primary cloud region becomes unavailable",
     "response": "The system fails over to a secondary region, restoring service within 2 minutes without data loss"
   },
   {
+    "id": "ECO-S12",
     "name": "Scaling Under Peak Load",
-    "attribute": "Scalability",
+    "qualityAttribute": "Scalability",
     "environment": "The system operates in a production environment with variable user traffic, including occasional peak loads triggered by external events.",
     "stimulus": "A sudden surge in concurrent user activity, such as 10x the average traffic within a short time window (e.g., during a flash sale or unplanned event).",
     "response": "The system dynamically scales resources to handle the increased load without degrading response times beyond 3 seconds for 95% of requests, ensuring system stability and maintaining core functionality.[scenario3.md](scenario3.md)"
   },
   {
+    "id": "ECO-S13",
     "name": "Payment Integration",
-    "attribute": "Interoperability",
+    "qualityAttribute": "Interoperability",
     "environment": "Production under normal transaction load",
     "stimulus": "A customer completes a payment using PayPal",
     "response": "The system communicates with PayPal’s API, confirms payment, and updates order status accordingly"
   },
   {
+    "id": "ECO-S14",
     "name": "Inventory API Format Change",
-    "attribute": "Interoperability",
+    "qualityAttribute": "Interoperability",
     "environment": "Staging environment for integration testing",
     "stimulus": "An external inventory system changes its JSON response schema",
     "response": "The system adapts using schema versioning, maintains compatibility, and continues syncing stock correctly"
   },
   {
+    "id": "ECO-S15",
     "name": "First-Time Buyer Experience",
-    "attribute": "Usability",
+    "qualityAttribute": "Usability",
     "environment": "Production site on desktop browser",
     "stimulus": "A new user tries to make a purchase without an existing account",
     "response": "The system guides the user through account creation and completes checkout without confusion or error"
   },
   {
+    "id": "ECO-S16",
     "name": "Mobile Device Navigation",
-    "attribute": "Usability",
+    "qualityAttribute": "Usability",
     "environment": "Production on a mobile browser",
     "stimulus": "A user browses and uses filters on a smartphone",
     "response": "The system responds to user interactions with < 2s latency and maintains full responsiveness and readability"
   },
   {
+    "id": "ECO-S17",
     "name": "Cloud Deployment Rollout",
-    "attribute": "Deployability",
+    "qualityAttribute": "Deployability",
     "environment": "Staging environment using CI/CD pipeline",
     "stimulus": "A new application version is deployed using blue-green deployment",
     "response": "The deployment completes without downtime and switches traffic seamlessly to the new version"
   },
   {
+    "id": "ECO-S18",
     "name": "Deployment Failure Rollback",
-    "attribute": "Deployability",
+    "qualityAttribute": "Deployability",
     "environment": "Production during a scheduled release",
     "stimulus": "A bug is detected post-deployment via health checks",
     "response": "The system automatically rolls back to the previous version within 2 minutes and notifies the operations team"
   },
   {
+    "id": "ECO-S19",
     "name": "Order Placement Consistency",
-    "attribute": "Consistency",
+    "qualityAttribute": "Consistency",
     "environment": "The system operates in a production environment where multiple users are concurrently placing orders, with some transactions involving high-value items or limited stock.",
     "stimulus": "Simultaneous order placement requests for the same item from multiple users during a high-demand period (e.g., during a limited-time sale or product launch).",
     "response": "The system ensures consistency by processing orders sequentially or using a distributed locking mechanism, ensuring that no duplicate or conflicting orders are processed. All successful orders are confirmed within 5 seconds, and inventory levels are accurately updated in real time across all components."

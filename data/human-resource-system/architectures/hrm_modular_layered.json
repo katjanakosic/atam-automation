@@ -1,0 +1,140 @@
+{
+  "id": "hrm-modular-layered",
+  "domain": "hrm",
+  "architecturePattern": "Modular Monolith (Layered + Hexagonal)",
+  "patternCharacteristics": {
+    "advantages": [
+      "Clear domain boundaries via modules",
+      "Simpler deployment and debugging",
+      "Strong transactional consistency within a single database",
+      "Good fit for enterprise HR workflows"
+    ],
+    "disadvantages": [
+      "Scaling is coarse-grained (scale whole app)",
+      "Risk of module coupling over time",
+      "Longer CI pipelines as codebase grows"
+    ]
+  },
+  "components": [
+    {
+      "name": "WebUI",
+      "type": "Application",
+      "responsibilities": ["HR/Manager/Employee user interface", "Form rendering", "Client-side validation"],
+      "technologies": ["React"],
+      "interactsWith": ["HRMBackendAPI"]
+    },
+    {
+      "name": "HRMBackendAPI",
+      "type": "Backend Application",
+      "responsibilities": ["Expose REST APIs", "Authentication integration", "Orchestrate workflows"],
+      "technologies": ["Java", "Spring Boot"],
+      "interactsWith": [
+        "AuthNAuthZ",
+        "EmployeeModule",
+        "PayrollModule",
+        "PerformanceModule",
+        "OnboardingModule",
+        "IntegrationModule",
+        "AuditLogging",
+        "HRMDatabase",
+        "Cache"
+      ]
+    },
+    {
+      "name": "AuthNAuthZ",
+      "type": "Module",
+      "responsibilities": ["Role-based access control", "Token validation", "Policy enforcement"],
+      "technologies": ["Spring Security", "OIDC"],
+      "interactsWith": ["HRMBackendAPI", "IdentityProvider", "AuditLogging"]
+    },
+    {
+      "name": "EmployeeModule",
+      "type": "Module",
+      "responsibilities": ["Employee master data", "Contracts", "Org structure"],
+      "technologies": ["Java"],
+      "interactsWith": ["HRMBackendAPI", "HRMDatabase", "AuditLogging"]
+    },
+    {
+      "name": "PayrollModule",
+      "type": "Module",
+      "responsibilities": ["Payroll rules", "Deductions", "Payslip generation"],
+      "technologies": ["Java"],
+      "interactsWith": ["HRMBackendAPI", "HRMDatabase", "Cache", "AuditLogging"]
+    },
+    {
+      "name": "PerformanceModule",
+      "type": "Module",
+      "responsibilities": ["Review cycles", "Goal tracking", "Feedback forms"],
+      "technologies": ["Java"],
+      "interactsWith": ["HRMBackendAPI", "HRMDatabase", "AuditLogging"]
+    },
+    {
+      "name": "OnboardingModule",
+      "type": "Module",
+      "responsibilities": ["Onboarding workflows", "Task assignments", "Approvals and SLA tracking"],
+      "technologies": ["Java"],
+      "interactsWith": ["HRMBackendAPI", "HRMDatabase", "NotificationService", "AuditLogging"]
+    },
+    {
+      "name": "IntegrationModule",
+      "type": "Module",
+      "responsibilities": ["Nightly imports", "API/CSV parsing", "Conflict detection"],
+      "technologies": ["Java"],
+      "interactsWith": ["HRMBackendAPI", "HRMDatabase", "IdentityProvider", "TimeTrackingSystem", "AuditLogging"]
+    },
+    {
+      "name": "AuditLogging",
+      "type": "Cross-cutting Component",
+      "responsibilities": ["Record security and data access events", "Tamper-evident logging"],
+      "technologies": ["Append-only log", "WORM storage"],
+      "interactsWith": ["AuthNAuthZ", "EmployeeModule", "PayrollModule", "PerformanceModule", "OnboardingModule", "IntegrationModule", "AuditLogStore"]
+    },
+    {
+      "name": "HRMDatabase",
+      "type": "SQL Database",
+      "responsibilities": ["Transactional storage for HR entities", "Consistency for workflows and payroll"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["HRMBackendAPI"]
+    },
+    {
+      "name": "Cache",
+      "type": "Cache",
+      "responsibilities": ["Cache frequently accessed reference data", "Reduce DB load during peaks"],
+      "technologies": ["Redis"],
+      "interactsWith": ["HRMBackendAPI", "PayrollModule"]
+    },
+    {
+      "name": "NotificationService",
+      "type": "Internal Service",
+      "responsibilities": ["Email notifications for onboarding and reviews"],
+      "technologies": ["SMTP", "Worker"],
+      "interactsWith": ["OnboardingModule"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "External System",
+      "responsibilities": ["User authentication", "User provisioning"],
+      "technologies": ["Azure AD / Keycloak"],
+      "interactsWith": ["AuthNAuthZ", "IntegrationModule"]
+    },
+    {
+      "name": "TimeTrackingSystem",
+      "type": "External System",
+      "responsibilities": ["Work time and absence data source"],
+      "technologies": ["External API"],
+      "interactsWith": ["IntegrationModule"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Log Storage",
+      "responsibilities": ["Store audit logs with retention"],
+      "technologies": ["OpenSearch / S3 WORM"],
+      "interactsWith": ["AuditLogging"]
+    }
+  ],
+  "infrastructure": [
+    { "name": "LoadBalancer", "type": "L7", "details": "Routes traffic to HRMBackendAPI instances" },
+    { "name": "AppServerCluster", "type": "Compute", "details": "Horizontally scaled HRMBackendAPI instances" },
+    { "name": "DBCluster", "type": "Database", "details": "PostgreSQL HA with read replicas" }
+  ]
+}

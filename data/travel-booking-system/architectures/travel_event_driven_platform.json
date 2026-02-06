@@ -1,0 +1,191 @@
+{
+  "id": "travel-event-driven-platform",
+  "domain": "travel-booking",
+  "architecturePattern": "Event-Driven Platform (Saga Orchestration + CQRS-style Read Models)",
+  "patternCharacteristics": {
+    "advantages": [
+      "Resilient partner integration with compensation",
+      "Scales search/read workloads independently from booking writes",
+      "Clear audit trail via events"
+    ],
+    "disadvantages": [
+      "Higher operational complexity",
+      "Eventual consistency between read models and booking state",
+      "Requires strong observability"
+    ]
+  },
+  "components": [
+    {
+      "name": "WebMobileUI",
+      "type": "Application",
+      "responsibilities": ["User search and booking UI", "Account management"],
+      "technologies": ["React", "Mobile App"],
+      "interactsWith": ["APIGateway"]
+    },
+    {
+      "name": "APIGateway",
+      "type": "Gateway",
+      "responsibilities": ["Routing", "Auth enforcement", "Rate limiting"],
+      "technologies": ["Kong / NGINX"],
+      "interactsWith": ["AuthService", "SearchQueryService", "BookingSagaService", "PaymentService", "ProfileService"]
+    },
+    {
+      "name": "AuthService",
+      "type": "Service",
+      "responsibilities": ["Authentication", "JWT issuance", "Role-based authorization"],
+      "technologies": ["OIDC", "JWT"],
+      "interactsWith": ["IdentityProvider", "AuditService"]
+    },
+    {
+      "name": "SearchQueryService",
+      "type": "Service",
+      "responsibilities": ["Fast flight/hotel search queries", "Ranking and filtering"],
+      "technologies": ["Python"],
+      "interactsWith": ["SearchReadModel", "CachingLayer"]
+    },
+    {
+      "name": "BookingSagaService",
+      "type": "Orchestrator",
+      "responsibilities": ["Coordinate booking steps", "Reserve inventory", "Compensate on failures"],
+      "technologies": ["Temporal / Camunda"],
+      "interactsWith": ["EventBus", "InventoryService", "PaymentService", "BookingWriteStore", "AuditService"]
+    },
+    {
+      "name": "InventoryService",
+      "type": "Service",
+      "responsibilities": ["Seat/room reservation", "Prevent double booking", "Manage holds"],
+      "technologies": ["Java"],
+      "interactsWith": ["InventoryDB", "PartnerConnector", "EventBus"]
+    },
+    {
+      "name": "PaymentService",
+      "type": "Service",
+      "responsibilities": ["Payment authorization/capture", "Idempotency", "Provider routing rules"],
+      "technologies": ["Java", "Idempotency keys"],
+      "interactsWith": ["PaymentDB", "PaymentProviderAdapter", "EventBus", "AuditService"]
+    },
+    {
+      "name": "PaymentProviderAdapter",
+      "type": "Adapter",
+      "responsibilities": ["Integrate external payment providers", "Circuit breaker and retries"],
+      "technologies": ["Resilience4j"],
+      "interactsWith": ["PaymentService", "ExternalPaymentProviders"]
+    },
+    {
+      "name": "PartnerConnector",
+      "type": "Adapter",
+      "responsibilities": ["Integrate airline/hotel partner APIs", "Normalize partner responses"],
+      "technologies": ["API Gateway SDK"],
+      "interactsWith": ["InventoryService", "AirlinePartnerAPI", "HotelPartnerAPI"]
+    },
+    {
+      "name": "EventBus",
+      "type": "Messaging",
+      "responsibilities": ["Publish booking/payment/inventory events", "Decouple services"],
+      "technologies": ["Kafka"],
+      "interactsWith": ["BookingSagaService", "InventoryService", "PaymentService", "ReadModelUpdater", "AuditService"]
+    },
+    {
+      "name": "ReadModelUpdater",
+      "type": "Worker",
+      "responsibilities": ["Update denormalized search/read models from events"],
+      "technologies": ["Python Worker"],
+      "interactsWith": ["EventBus", "SearchReadModel"]
+    },
+    {
+      "name": "SearchReadModel",
+      "type": "Database",
+      "responsibilities": ["Denormalized search data for fast queries"],
+      "technologies": ["Elasticsearch / OpenSearch"],
+      "interactsWith": ["SearchQueryService", "ReadModelUpdater"]
+    },
+    {
+      "name": "BookingWriteStore",
+      "type": "Database",
+      "responsibilities": ["Booking state and saga state"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["BookingSagaService"]
+    },
+    {
+      "name": "InventoryDB",
+      "type": "Database",
+      "responsibilities": ["Inventory reservations and holds"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["InventoryService"]
+    },
+    {
+      "name": "PaymentDB",
+      "type": "Database",
+      "responsibilities": ["Payment records and idempotency keys"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["PaymentService"]
+    },
+    {
+      "name": "ProfileService",
+      "type": "Service",
+      "responsibilities": ["Traveler profiles", "Preferences", "Saved payment methods metadata"],
+      "technologies": ["Go"],
+      "interactsWith": ["ProfileDB", "AuditService"]
+    },
+    {
+      "name": "ProfileDB",
+      "type": "Database",
+      "responsibilities": ["Traveler profile data"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["ProfileService"]
+    },
+    {
+      "name": "CachingLayer",
+      "type": "Cache",
+      "responsibilities": ["Cache popular search queries and partner responses"],
+      "technologies": ["Redis"],
+      "interactsWith": ["SearchQueryService"]
+    },
+    {
+      "name": "AuditService",
+      "type": "Service",
+      "responsibilities": ["Collect audit events, retention and integrity controls"],
+      "technologies": ["OpenSearch", "WORM storage"],
+      "interactsWith": ["EventBus", "AuditLogStore"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Log Storage",
+      "responsibilities": ["Immutable audit log retention"],
+      "technologies": ["S3 WORM / OpenSearch"],
+      "interactsWith": ["AuditService"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "External System",
+      "responsibilities": ["User authentication source"],
+      "technologies": ["Keycloak / Cognito"],
+      "interactsWith": ["AuthService"]
+    },
+    {
+      "name": "AirlinePartnerAPI",
+      "type": "External System",
+      "responsibilities": ["Flight availability and booking confirmation"],
+      "technologies": ["Partner API"],
+      "interactsWith": ["PartnerConnector"]
+    },
+    {
+      "name": "HotelPartnerAPI",
+      "type": "External System",
+      "responsibilities": ["Hotel availability and booking confirmation"],
+      "technologies": ["Partner API"],
+      "interactsWith": ["PartnerConnector"]
+    },
+    {
+      "name": "ExternalPaymentProviders",
+      "type": "External System",
+      "responsibilities": ["Payment processing"],
+      "technologies": ["Stripe/Adyen/etc."],
+      "interactsWith": ["PaymentProviderAdapter"]
+    }
+  ],
+  "infrastructure": [
+    { "name": "KubernetesCluster", "type": "Compute", "details": "Runs services with autoscaling" },
+    { "name": "ObservabilityStack", "type": "Monitoring", "details": "Tracing, metrics, centralized logging (OTel)" }
+  ]
+}
