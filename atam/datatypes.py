@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Literal
 from pydantic import BaseModel, Field
 
 
@@ -31,15 +31,24 @@ class Architecture(BaseModel):
 
 # Mapping Output Types
 
+Strength = Literal[0.1, 0.3, 0.5, 0.7, 0.9]
+Confidence = Literal[0.2, 0.4, 0.6, 0.8, 1.0]
+
 class EffectSign(str, Enum):
     POSITIVE = "positive"
     NEGATIVE = "negative"
 
-
 class Effect(BaseModel):
     effectSign: EffectSign
-    strength: float = Field(..., ge=0.0, le=1.0, description="Magnitude of impact")
-    confidence: float = Field(..., ge=0.0, le=1.0, description="Model's confidence level")
+    strength: Strength = Field(..., description="Magnitude of impact (discrete scale)")
+    confidence: Confidence = Field(..., description="Evidence-based confidence (discrete scale)")
+    # traceable grounding
+    evidence: List[str] = Field(
+        ...,
+        min_length=1,
+        max_length=3,
+        description="1–3 explicit architecture facts (responsibility/tech) or an interaction path using component names"
+    )
     explanation: str = Field(..., description="Short grounded explanation")
 
 class ComponentImpact(BaseModel):
@@ -72,10 +81,3 @@ class ArchitectureSummary(BaseModel):
     architectureId: str
     topSensitivities: List[ComponentSensitivity] = Field(default_factory=list)
     tradeoffs: List[Tradeoff] = Field(default_factory=list)
-
-
-
-
-
-
-
