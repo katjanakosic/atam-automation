@@ -71,7 +71,7 @@ export const SENSITIVITY_THRESHOLDS = {
 } as const
 
 export function getSensitivityColor(value: number): string {
-  if (value >= SENSITIVITY_THRESHOLDS.high) return "#22c55f"  // green-500
+  if (value >= SENSITIVITY_THRESHOLDS.high) return "#22c55e"  // green-500
   if (value >= SENSITIVITY_THRESHOLDS.medium) return "#eab308" // yellow-500
   return "#9ca3af" // gray-400
 }
