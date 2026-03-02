@@ -14,7 +14,7 @@ interface SensitivityBarProps {
 
 export function SensitivityBar({ value, className }: SensitivityBarProps) {
   const percentage = Math.round(value * 100)
-  const colorClass = getSensitivityColor(value)
+  const color = getSensitivityColor(value)
 
   return (
     <TooltipProvider>
@@ -23,8 +23,8 @@ export function SensitivityBar({ value, className }: SensitivityBarProps) {
           <div className={cn("flex items-center gap-2", className)}>
             <div className="h-2 w-24 rounded-full bg-muted overflow-hidden">
               <div
-                className={cn("h-full rounded-full transition-all", colorClass)}
-                style={{ width: `${percentage}%` }}
+                className="h-full rounded-full transition-all"
+                style={{ width: `${percentage}%`, backgroundColor: color }}
               />
             </div>
             <span className="text-sm font-medium tabular-nums">
