@@ -1,0 +1,322 @@
+{
+  "id": "olp-misarch",
+  "domain": "online-learning-platform",
+  "architecturePattern": "Event-Driven Microservices (API Gateway + Saga Orchestration + CQRS + Database-per-Service)",
+  "patternCharacteristics": {
+    "advantages": [
+      "Saga orchestration prevents over-enrollment",
+      "Loose service coupling allows new content types to be added",
+      "CQRS read model absorbs high-read traffic"
+    ],
+    "disadvantages": [
+      "Consistency between models requires careful saga design",
+      "High operational complexity",
+      "MediaService introduces external dependency latency risk"
+    ]
+  },
+  "components": [
+    {
+      "name": "Frontend",
+      "type": "Application",
+      "responsibilities": [
+        "Student UI: course browsing, enrollment, video playback, quiz submission, progress tracking",
+        "Instructor UI: course creation, content upload, student management",
+        "Responsive design for desktop and mobile"
+      ],
+      "technologies": ["React.js", "TypeScript"],
+      "interactsWith": ["APIGateway"]
+    },
+    {
+      "name": "APIGateway",
+      "type": "API Gateway",
+      "responsibilities": [
+        "Entry point for client requests",
+        "Input sanitization and rate limiting",
+        "Routing"
+      ],
+      "technologies": ["Kong/NGINX", "OAuth2/JWT"],
+      "interactsWith": [
+        "AuthService", "UserService", "CourseService", "CourseSearchService",
+        "EnrollmentService", "PaymentService", "MediaService",
+        "ProgressService", "NotificationService"
+      ]
+    },
+    {
+      "name": "AuthService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Authentication",
+        "Role-based Authorization"
+      ],
+      "technologies": ["Kotlin", "Spring Boot", "Spring Security", "OIDC"],
+      "interactsWith": ["IdentityProvider", "AuditService", "UserDB"]
+    },
+    {
+      "name": "UserService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Profile management",
+        "Account preferences and notification settings",
+        "GDPR data subject management"
+      ],
+      "technologies": ["Kotlin", "Spring Boot"],
+      "interactsWith": ["UserDB", "EventBus", "AuditService"]
+    },
+    {
+      "name": "CourseService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Course catalog management: create, update, publish",
+        "Course seat capacity management",
+        "Content type registry: pre-recorded, live session, assignment"
+      ],
+      "technologies": ["Kotlin", "Spring Boot"],
+      "interactsWith": ["CourseDB", "EventBus", "MediaService"]
+    },
+    {
+      "name": "CourseSearchService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Course search and filtering",
+        "Return available seat counts"
+      ],
+      "technologies": ["Go", "Elasticsearch"],
+      "interactsWith": ["SearchIndex", "CacheLayer", "EventBus"]
+    },
+    {
+      "name": "EnrollmentService",
+      "type": "Microservice/Saga Orchestrator",
+      "responsibilities": [
+        "Enrollment: initiate, confirm, cancel",
+        "Checkout saga orchestration: reserve seat, capture payment, grant course access",
+        "Concurrency control on seat reservation to prevent over-enrollment",
+        "Publishes successful and failed enrollment events"
+      ],
+      "technologies": ["Kotlin", "Spring Boot"],
+      "interactsWith": [
+        "EnrollmentDB", "EventBus", "CourseService",
+        "PaymentService", "AccessService", "AuditService"
+      ]
+    },
+    {
+      "name": "PaymentService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Payment authorization",
+        "Provider routing: PayPal",
+        "Refund handling on enrollment cancellation"
+      ],
+      "technologies": ["TypeScript", "NestJS", "MongoDB"],
+      "interactsWith": ["PaymentDB", "EventBus", "PaymentProviderAdapter", "AuditService"]
+    },
+    {
+      "name": "PaymentProviderAdapter",
+      "type": "Integration Adapter",
+      "responsibilities": [
+        "Integrate external payment providers: PayPal",
+        "Retry on provider failures"
+      ],
+      "technologies": ["TypeScript", "MongoDB"],
+      "interactsWith": ["PaymentService", "ExternalPaymentProviders"]
+    },
+    {
+      "name": "AccessService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Grant/revoke student access to course content",
+        "Enforce access control on content requests"
+      ],
+      "technologies": ["Kotlin"],
+      "interactsWith": ["AccessDB", "EventBus", "AuditService"]
+    },
+    {
+      "name": "MediaService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Lecture video/course material storage",
+        "CDN integration for high-throughput video delivery",
+        "Instructor content upload handling"
+      ],
+      "technologies": ["Rust", "MinIO"],
+      "interactsWith": ["MediaStore", "CDN"]
+    },
+    {
+      "name": "ProgressService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Track student progress per course",
+        "Expose progress summaries for student dashboard"
+      ],
+      "technologies": ["Kotlin", "Spring Boot"],
+      "interactsWith": ["ProgressDB", "EventBus", "AuditService"]
+    },
+    {
+      "name": "NotificationService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Send email/push notifications on enrollment confirmation, payment receipt, and new content availability",
+        "Subscription and preference management"
+      ],
+      "technologies": ["Kotlin", "Spring Boot"],
+      "interactsWith": ["NotificationDB", "EventBus", "ExternalEmailProvider"]
+    },
+    {
+      "name": "AuditService",
+      "type": "Microservice",
+      "responsibilities": [
+        "Store audit events from all services",
+        "Retain logs for GDPR-required periods",
+        "Expose audit query API for compliance and security review"
+      ],
+      "technologies": ["Kotlin", "Spring Boot", "WORM storage"],
+      "interactsWith": ["AuditLogStore", "EventBus"]
+    },
+    {
+      "name": "EventBus",
+      "type": "Messaging Infrastructure",
+      "responsibilities": [
+        "Publish/subscribe for all domain events",
+        "Buffer enrollment bursts during course launch spike",
+        "Feed CQRS read model updates to CourseSearchService"
+      ],
+      "technologies": ["Apache Kafka", "Dapr"],
+      "interactsWith": [
+        "EnrollmentService", "PaymentService", "CourseService", "AccessService",
+        "ProgressService", "NotificationService", "CourseSearchService", "AuditService"
+      ]
+    },
+    {
+      "name": "CacheLayer",
+      "type": "Cache",
+      "responsibilities": [
+        "Cache popular course listings and search results",
+        "Reduce load on CourseDB and SearchIndex during enrollment spikes"
+      ],
+      "technologies": ["Redis"],
+      "interactsWith": ["CourseSearchService", "CourseService"]
+    },
+    {
+      "name": "ObservabilityStack",
+      "type": "Infrastructure",
+      "responsibilities": [
+        "Distributed tracing across all services",
+        "Autoscaling triggers for EnrollmentService and MediaService"
+      ],
+      "technologies": ["Prometheus", "Grafana", "AlertManager"],
+      "interactsWith": ["All services"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "Infrastructure",
+      "responsibilities": [
+        "User authentication source",
+        "JWT issuance and key management"
+      ],
+      "technologies": ["Keycloak"],
+      "interactsWith": ["AuthService", "APIGateway"]
+    },
+    {
+      "name": "UserDB",
+      "type": "Database",
+      "responsibilities": ["Student and instructor profile data"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["AuthService", "UserService"]
+    },
+    {
+      "name": "CourseDB",
+      "type": "Database",
+      "responsibilities": ["Course catalog write store including seat capacity"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["CourseService"]
+    },
+    {
+      "name": "SearchIndex",
+      "type": "Search Index",
+      "responsibilities": ["Denormalized read model for fast course search and seat availability display"],
+      "technologies": ["Elasticsearch"],
+      "interactsWith": ["CourseSearchService"]
+    },
+    {
+      "name": "EnrollmentDB",
+      "type": "Database",
+      "responsibilities": ["Enrollment state and temporal saga state"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["EnrollmentService"]
+    },
+    {
+      "name": "PaymentDB",
+      "type": "Database",
+      "responsibilities": ["Payment records and idempotency keys"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["PaymentService"]
+    },
+    {
+      "name": "AccessDB",
+      "type": "Database",
+      "responsibilities": ["Student-course access grants and expiry records"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["AccessService"]
+    },
+    {
+      "name": "ProgressDB",
+      "type": "Database",
+      "responsibilities": ["Student progress records: lesson completions, quiz scores"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["ProgressService"]
+    },
+    {
+      "name": "NotificationDB",
+      "type": "Database",
+      "responsibilities": ["Notification preferences and delivery log"],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["NotificationService"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Immutable Log Storage",
+      "responsibilities": ["Tamper-evident audit log retention for GDPR compliance"],
+      "technologies": ["OpenSearch"],
+      "interactsWith": ["AuditService"]
+    },
+    {
+      "name": "MediaStore",
+      "type": "Object Storage",
+      "responsibilities": ["Lecture videos, slides, and downloadable course materials"],
+      "technologies": ["S3-compatible storage"],
+      "interactsWith": ["MediaService"]
+    },
+    {
+      "name": "CDN",
+      "type": "Content Delivery Network",
+      "responsibilities": ["Edge caching and delivery of video content"],
+      "technologies": ["Cloudflare"],
+      "interactsWith": ["MediaService"]
+    },
+    {
+      "name": "ExternalPaymentProviders",
+      "type": "External System",
+      "responsibilities": ["Payment processing: PayPal"],
+      "technologies": ["Payment Provider SDKs"],
+      "interactsWith": ["PaymentProviderAdapter"]
+    },
+    {
+      "name": "ExternalEmailProvider",
+      "type": "External System",
+      "responsibilities": ["Email delivery for enrollment confirmations and notifications"],
+      "technologies": ["SMTP"],
+      "interactsWith": ["NotificationService"]
+    }
+  ],
+  "infrastructure": [
+    {
+      "name": "KubernetesCluster",
+      "type": "Compute",
+      "details": "All services deployed as independently scalable Kubernetes Deployments; HPA configured per service; EnrollmentService and MediaService have separate scaling policies reflecting asymmetric load profiles"
+    },
+    {
+      "name": "ObservabilityStack",
+      "type": "Monitoring",
+      "details": "Prometheus metrics scraped per pod; Grafana dashboards; AlertManager notifies on saga failures and SLA breaches"
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "id": "olp-modular-monolith",
+  "domain": "online-learning-platform",
+  "architecturePattern": "Modular Monolith Core + Independently Deployed Applications (IDAs) + Micro-Frontends (MFEs)",
+  "patternCharacteristics": {
+    "advantages": [
+      "IDAs can be independently scaled",
+      "CourseDiscovery IDA with Elasticsearch index absorbs high-read course search load",
+      "New content types can be introduced without modifying the core LearningManagementSystem (LMS)"
+    ],
+    "disadvantages": [
+      "Monolith is scaling bottleneck: LMS and ContentManagementSystem (CMS) share the same deployment unit",
+      "MySQL student data and MongoDB course data require separate consistency strategies",
+      "Celery/Redis introduces latency for grade processing"
+    ]
+  },
+  "components": [
+    {
+      "name": "LearnerMFE",
+      "type": "Micro-Frontend",
+      "responsibilities": [
+        "Student UI: course browsing, enrollment, video playback, progress tracking",
+        "Responsive design for desktop and mobile"
+      ],
+      "technologies": ["React.js", "TypeScript"],
+      "interactsWith": ["APIGateway"]
+    },
+    {
+      "name": "AuthoringMFE",
+      "type": "Micro-Frontend",
+      "responsibilities": [
+        "Course authoring UI (Studio frontend)",
+        "Content upload and course structure editing (OLP-S04)"
+      ],
+      "technologies": ["React.js", "TypeScript"],
+      "interactsWith": ["APIGateway"]
+    },
+    {
+      "name": "APIGateway",
+      "type": "API Gateway",
+      "responsibilities": [
+        "Single entry point for all MFE and mobile client requests",
+        "JWT token validation and enforcement",
+        "Request routing to edx-platform LMS, CMS, and IDAs",
+        "Rate limiting"
+      ],
+      "technologies": ["Nginx", "OAuth2/JWT"],
+      "interactsWith": [
+        "LMS", "CMS", "EcommerceService", "CourseDiscoveryService",
+        "CredentialsService", "ForumsService"
+      ]
+    },
+    {
+      "name": "LMS",
+      "type": "Modular Monolith Service",
+      "responsibilities": [
+        "Course content delivery to enrolled students",
+        "Student enrollment state management",
+        "Grade and progress tracking",
+        "Content rendering: video, quizzes, assignments",
+        "Seat availability enforcement",
+        "JWT-authenticated REST APIs"
+      ],
+      "technologies": ["Python", "Django", "MySQL", "MongoDB", "Memcached", "Celery"],
+      "interactsWith": [
+        "StudentDB", "CourseContentDB", "CeleryBroker",
+        "EcommerceService", "CredentialsService",
+        "ForumsService", "EventBus", "AuditLogStore"
+      ]
+    },
+    {
+      "name": "CMS",
+      "type": "Modular Monolith Service",
+      "responsibilities": [
+        "Course authoring backend",
+        "Course structure and content storage",
+        "Publish course updates to CourseDiscoveryService",
+        "New content type registration"
+      ],
+      "technologies": ["Python", "Django", "MongoDB"],
+      "interactsWith": [
+        "CourseContentDB", "EventBus", "CourseDiscoveryService"
+      ]
+    },
+    {
+      "name": "EcommerceService",
+      "type": "IDA (Independently Deployed Application)",
+      "responsibilities": [
+        "Course enrollment order workflows: seat reservation, payment capture, enrollment confirmation)",
+        "Coupon and discount management",
+        "Payment processing",
+        "Independently scalable under enrollment spike",
+        "Publishes successful and failed enrollment event)"
+      ],
+      "technologies": ["Python", "Django", "MySQL"],
+      "interactsWith": [
+        "EcommerceDB", "LMS", "PaymentProviderAdapter",
+        "EventBus", "AuditLogStore"
+      ]
+    },
+    {
+      "name": "CourseDiscoveryService",
+      "type": "IDA (Independently Deployed Application)",
+      "responsibilities": [
+        "Consolidated course and program metadata aggregation",
+        "Course search and filtering",
+        "CQRS-style read model",
+        "Exposes REST search API",
+        "Updated via event bus on CoursePublished events"
+      ],
+      "technologies": ["Python", "Django", "Elasticsearch", "Memcached"],
+      "interactsWith": [
+        "CourseDiscoveryDB", "SearchIndex", "CacheLayer",
+        "EventBus", "LMS", "CMS", "EcommerceService"
+      ]
+    },
+    {
+      "name": "CredentialsService",
+      "type": "IDA (Independently Deployed Application)",
+      "responsibilities": [
+        "Issue course completion certificates and program credentials",
+        "Credential verification endpoint",
+        "Retains credential issuance records for compliance audit"
+      ],
+      "technologies": ["Python", "Django", "MySQL"],
+      "interactsWith": [
+        "CredentialsDB", "LMS", "EventBus", "AuditLogStore"
+      ]
+    },
+    {
+      "name": "ForumsService",
+      "type": "IDA (Independently Deployed Application)",
+      "responsibilities": [
+        "Course discussion",
+        "Notification of thread updates",
+        "Search within discussions"
+      ],
+      "technologies": ["Ruby", "MongoDB", "Elasticsearch"],
+      "interactsWith": ["ForumsDB", "LMS", "SearchIndex"]
+    },
+    {
+      "name": "PaymentProviderAdapter",
+      "type": "Integration Adapter",
+      "responsibilities": [
+        "Integrate external payment provider: PayPal",
+        "Circuit breaker and retry on provider failures"
+      ],
+      "technologies": ["Python", "Django"],
+      "interactsWith": ["EcommerceService", "ExternalPaymentProviders"]
+    },
+    {
+      "name": "EventBus",
+      "type": "Messaging Infrastructure",
+      "responsibilities": [
+        "Pub/sub messaging across IDAs",
+        "Buffer enrollment and course update events during launch spikes"
+      ],
+      "technologies": ["Apache Kafka", "openedx-events"],
+      "interactsWith": [
+        "LMS", "CMS", "EcommerceService",
+        "CourseDiscoveryService", "CredentialsService", "AuditLogStore"
+      ]
+    },
+    {
+      "name": "CeleryBroker",
+      "type": "Async Task Queue",
+      "responsibilities": [
+        "Queue and distribute background tasks",
+        "Retry failed background jobs",
+        "Decouple compute-intensive tasks"
+      ],
+      "technologies": ["Celery", "Redis"],
+      "interactsWith": ["LMS", "CredentialsService"]
+    },
+    {
+      "name": "CacheLayer",
+      "type": "Cache",
+      "responsibilities": [
+        "Cache course listing and search API responses"
+      ],
+      "technologies": ["Redis"],
+      "interactsWith": ["LMS", "CourseDiscoveryService"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Immutable Log Storage",
+      "responsibilities": [
+        "Tamper-evident retention of all events: enrollment, payment, grade, credential issuance, and access events",
+        "12-month minimum retention for GDPR compliance"
+      ],
+      "technologies": ["S3 WORM"],
+      "interactsWith": ["EventBus", "LMS", "EcommerceService", "CredentialsService"]
+    },
+    {
+      "name": "StudentDB",
+      "type": "Database",
+      "responsibilities": [
+        "Student enrollment records, grades, and progress"
+      ],
+      "technologies": ["MySQL"],
+      "interactsWith": ["LMS"]
+    },
+    {
+      "name": "CourseContentDB",
+      "type": "Database",
+      "responsibilities": [
+        "Course structure",
+        "Shared by LMS (read) and CMS (read/write)"
+      ],
+      "technologies": ["MongoDB"],
+      "interactsWith": ["LMS", "CMS"]
+    },
+    {
+      "name": "EcommerceDB",
+      "type": "Database",
+      "responsibilities": ["Order records, seat products, coupons"],
+      "technologies": ["MySQL"],
+      "interactsWith": ["EcommerceService"]
+    },
+    {
+      "name": "CourseDiscoveryDB",
+      "type": "Database",
+      "responsibilities": ["Aggregated course metadata write store"],
+      "technologies": ["MySQL"],
+      "interactsWith": ["CourseDiscoveryService"]
+    },
+    {
+      "name": "SearchIndex",
+      "type": "Search Index",
+      "responsibilities": [
+        "Fast course and discussion search"
+      ],
+      "technologies": ["Elasticsearch"],
+      "interactsWith": ["CourseDiscoveryService", "ForumsService"]
+    },
+    {
+      "name": "CredentialsDB",
+      "type": "Database",
+      "responsibilities": ["Certificate and program credential issuance records"],
+      "technologies": ["MySQL"],
+      "interactsWith": ["CredentialsService"]
+    },
+    {
+      "name": "ForumsDB",
+      "type": "Database",
+      "responsibilities": ["Discussion threads, comments, and subscription records"],
+      "technologies": ["MongoDB"],
+      "interactsWith": ["ForumsService"]
+    },
+    {
+      "name": "VideoStorage",
+      "type": "Object Storage",
+      "responsibilities": [
+        "Lecture video and course material hosting"
+      ],
+      "technologies": ["Amazon S3"],
+      "interactsWith": ["LMS", "CDN"]
+    },
+    {
+      "name": "CDN",
+      "type": "Content Delivery Network",
+      "responsibilities": [
+        "Edge caching and delivery of video content"
+      ],
+      "technologies": ["Cloudflare"],
+      "interactsWith": ["LearnerMFE", "VideoStorage"]
+    },
+    {
+      "name": "ExternalPaymentProviders",
+      "type": "External System",
+      "responsibilities": ["Payment processing: PayPal"],
+      "technologies": ["Payment Provider SDKs"],
+      "interactsWith": ["PaymentProviderAdapter"]
+    }
+  ],
+  "infrastructure": [
+    {
+      "name": "KubernetesCluster",
+      "type": "Compute",
+      "details": "LMS and CMS deployed as a shared Deployment (edx-platform); EcommerceService, CourseDiscoveryService, CredentialsService, and ForumsService deployed as independent deployments with separate HPA policies"
+    },
+    {
+      "name": "ObservabilityStack",
+      "type": "Monitoring",
+      "details": "Celery task monitoring, Kafka consumer lag metrics via Prometheus; Grafana dashboards for enrollment throughput and LMS response times"
+    }
+  ]
+}

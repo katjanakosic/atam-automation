@@ -1,0 +1,225 @@
+{
+  "id": "securooms-cqrs-eventsourcing",
+  "domain": "secure-virtual-datarooms",
+  "architecturePattern": "CQRS + Event Sourcing",
+  "patternCharacteristics": {
+    "advantages": [
+      "Read and write sides scale independently",
+      "Reconstruction of any data room's state at any point in time"
+    ],
+    "disadvantages": [
+      "Higher conceptual complexity",
+      "Large event histories add operational complexity",
+      "Debugging distributed flows is hard"
+    ]
+  },
+  "components": [
+    {
+      "name": "BrowserSPA",
+      "type": "Presentation Layer",
+      "responsibilities": [
+        "Browser-based UI sending Commands to Command API",
+        "Browser-based UI issuing Queries to Query API",
+        "Client-side E2E encryption and decryption with SecuPass key"
+      ],
+      "technologies": ["HTML5", "JavaScript", "WebCrypto API"],
+      "interactsWith": ["CommandAPI", "QueryAPI"]
+    },
+    {
+      "name": "CommandAPI",
+      "type": "Command Side API Gateway",
+      "responsibilities": [
+        "Accept mutating commands: UploadFile, CreateRoom, GrantAccess, RevokeAccess, DeleteFile",
+        "Authenticate and authorise each command",
+        "Route validated commands to the Command Bus"
+      ],
+      "technologies": ["Java", "Spring Boot", "Spring Security", "JWT"],
+      "interactsWith": ["CommandBus", "IdentityProvider", "AuditEventStore"]
+    },
+    {
+      "name": "CommandBus",
+      "type": "Command Side Message Bus",
+      "responsibilities": [
+        "Delivery of commands to their respective Command Handlers"
+      ],
+      "technologies": ["Apache Kafka"],
+      "interactsWith": ["FileCommandHandler", "RoomCommandHandler", "AccessCommandHandler"]
+    },
+    {
+      "name": "FileCommandHandler",
+      "type": "Command Side Handler",
+      "responsibilities": [
+        "Process UploadFile, DeleteFile, MoveFile, RenameFile commands",
+        "Validates domain invariants: file size ≤ 100 GB, room capacity",
+        "Writes resulting domain events: FileUploaded, FileDeleted, FileMoved",
+        "Triggers virus scanner before emitting FileUploaded event"
+      ],
+      "technologies": ["Java", "custom event sourcing"],
+      "interactsWith": ["AuditEventStore", "ObjectStorage", "VirusScanner"]
+    },
+    {
+      "name": "RoomCommandHandler",
+      "type": "Command Side Handler",
+      "responsibilities": [
+        "Process CreateRoom, DeleteRoom, RenameRoom, SetDeletionDeadline commands",
+        "Enforce that only room owners can delete/configure rooms",
+        "Write RoomCreated, RoomDeleted, RoomRenamed, DeletionDeadlineSet events to Event Store"
+      ],
+      "technologies": ["Java"],
+      "interactsWith": ["AuditEventStore"]
+    },
+    {
+      "name": "AccessCommandHandler",
+      "type": "Command Side Handler",
+      "responsibilities": [
+        "Process GrantAccess, RevokeAccess, ChangeRole, InviteUser commands",
+        "Write AccessGranted, AccessRevoked, RoleChanged, UserInvited events to Event Store"
+      ],
+      "technologies": ["Java"],
+      "interactsWith": ["AuditEventStore", "NotificationService"]
+    },
+    {
+      "name": "AuditEventStore",
+      "type": "Event Store",
+      "responsibilities": [
+        "Immutable storage of all domain events in sequence"
+      ],
+      "technologies": ["Apache Kafka", "WORM storage"],
+      "interactsWith": ["FileCommandHandler", "RoomCommandHandler", "AccessCommandHandler", "ProjectionEngine"]
+    },
+    {
+      "name": "ProjectionEngine",
+      "type": "Read Side Projection Builder",
+      "responsibilities": [
+        "Subscription to the live event feed from the Event Store",
+        "Maintain multiple denormalized read models",
+        "Handle out-of-order events"
+      ],
+      "technologies": ["Java", "Kafka Streams"],
+      "interactsWith": ["AuditEventStore", "RoomReadModel", "AuditReadModel", "AdminReadModel"]
+    },
+    {
+      "name": "RoomReadModel",
+      "type": "Read Side Materialised View",
+      "responsibilities": [
+        "View of data room contents: folder structure, files, metadata, current user permissions",
+        "Updated by ProjectionEngine"
+      ],
+      "technologies": ["Redis"],
+      "interactsWith": ["ProjectionEngine", "QueryAPI"]
+    },
+    {
+      "name": "AuditReadModel",
+      "type": "Read Side Materialised View",
+      "responsibilities": [
+        "Projection of all audit events per data room",
+        "Queryable by data room owners and admins; access-controlled at query layer"
+      ],
+      "technologies": ["OpenSearch"],
+      "interactsWith": ["ProjectionEngine", "QueryAPI"]
+    },
+    {
+      "name": "AdminReadModel",
+      "type": "Read Side Materialised View",
+      "responsibilities": [
+        "Aggregated admin dashboard view",
+        "Support storage capacity planning and compliance reporting"
+      ],
+      "technologies": ["PostgreSQL read replica"],
+      "interactsWith": ["ProjectionEngine", "QueryAPI"]
+    },
+    {
+      "name": "QueryAPI",
+      "type": "Read Side API Gateway",
+      "responsibilities": [
+        "Serve all read-only queries",
+        "Enforce read-side authorisation",
+        "Route queries to the appropriate read model store"
+      ],
+      "technologies": ["Java", "Spring Boot", "JWT"],
+      "interactsWith": ["RoomReadModel", "AuditReadModel", "AdminReadModel", "IdentityProvider"]
+    },
+    {
+      "name": "NotificationService",
+      "type": "Event Consumer",
+      "responsibilities": [
+        "Subscribe to domain events",
+        "Send email notifications to relevant users"
+      ],
+      "technologies": ["Java", "SMTP"],
+      "interactsWith": ["AuditEventStore", "ExternalMailService"]
+    },
+    {
+      "name": "ObjectStorage",
+      "type": "File Store",
+      "responsibilities": [
+        "Store encrypted file binary content",
+        "Support chunked upload for files up to 100 GB",
+        "Data residency enforced in German data centers"
+      ],
+      "technologies": ["S3-compatible object storage (German DC)", "AES-256 GCM"],
+      "interactsWith": ["FileCommandHandler"]
+    },
+    {
+      "name": "VirusScanner",
+      "type": "Integration Adapter",
+      "responsibilities": [
+        "Reject upload if malware is detected",
+        "Record scan result"
+      ],
+      "technologies": ["G DATA Scanner API"],
+      "interactsWith": ["FileCommandHandler"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "External System",
+      "responsibilities": [
+        "Provide authentication",
+        "Issue tokens consumed by both CommandAPI and QueryAPI"
+      ],
+      "technologies": ["SAML 2.0", "Keycloak"],
+      "interactsWith": ["CommandAPI", "QueryAPI"]
+    },
+    {
+      "name": "ExternalMailService",
+      "type": "External System",
+      "responsibilities": [
+        "Delivers email invitations, upload notifications, and deletion warnings"
+      ],
+      "technologies": ["SMTP"],
+      "interactsWith": ["NotificationService"]
+    }
+  ],
+  "infrastructure": [
+    {
+      "name": "CommandCluster",
+      "type": "Compute",
+      "details": "Stateless Command API and Command Handler instances; scales independently of read side; all nodes write only to the Event Store"
+    },
+    {
+      "name": "QueryCluster",
+      "type": "Compute",
+      "details": "Stateless Query API instances; scales independently based on read traffic; all queries served from pre-built read model stores"
+    },
+    {
+      "name": "EventStorageCluster",
+      "type": "Event Store",
+      "details": "Durable, ordered, append-only event log with WORM retention; deployed in German data centers; acts as the single source of truth for all domain state"
+    },
+    {
+      "name": "ReadModelStores",
+      "type": "Database",
+      "details": "PostgreSQL and OpenSearch instances hosting denormalized read models; rebuilt from Event Store replay if corrupted; restricted to Germany"
+    },
+    {
+      "name": "ObjectStorageCluster",
+      "type": "Storage",
+      "details": "AES-256 GCM encrypted object storage for file content; supports chunked uploads up to 100 GB; German data center only"
+    },
+    {
+      "name": "TLSTermination",
+      "type": "Network",
+      "details": "TLS at load balancer for all client-facing traffic; mTLS between internal services"
+    }
+  ]
+}

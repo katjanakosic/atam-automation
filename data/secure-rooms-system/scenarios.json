@@ -1,0 +1,58 @@
+[
+  {
+    "id": "SECUROOMS-S1",
+    "name": "Large File Upload Under Concurrent Load",
+    "qualityAttribute": "Performance",
+    "environment": "Production, multiple enterprise users active",
+    "stimulus": "50 concurrent users each upload files between 1 GB and 100 GB into different data rooms simultaneously",
+    "response": "All uploads complete without timeout or data corruption; upload progress is visible in real time; server-side encryption is applied transparently"
+  },
+  {
+    "id": "SECUROOMS-S2",
+    "name": "Unauthorized Access Attempt on E2E-Encrypted Data Room",
+    "qualityAttribute": "Security",
+    "environment": "Production, attacker has stolen a valid session token",
+    "stimulus": "An attacker with a stolen session token attempts to download files from an end-to-end encrypted data room without knowledge of the SecuPass key",
+    "response": "Files are returned as ciphertext only; the server has no access to the plaintext; the attacker cannot decrypt the content; the access attempt is recorded in the audit trail with timestamp and user identity"
+  },
+  {
+    "id": "SECUROOMS-S3",
+    "name": "Role Downgrade Must Immediately Restrict Access",
+    "qualityAttribute": "Security",
+    "environment": "Production, active user session",
+    "stimulus": "A data room owner downgrades an active editor to viewer without download while that user has an open browser session",
+    "response": "The downgraded user's download and upload capabilities are revoked within 5 seconds; any in-progress download is terminated; the role change is recorded in the audit trail"
+  },
+  {
+    "id": "SECUROOMS-S4",
+    "name": "Audit Trail Completeness Under Normal Operations",
+    "qualityAttribute": "Auditability",
+    "environment": "Production, compliance review",
+    "stimulus": "A data room owner requests the full audit trail for a data room with 200 files after 6 months of activity involving 30 users",
+    "response": "All file uploads, downloads, views, deletions, permission changes, and login events are present in the trail with correct user identity and timestamps; the report is generated within 10 seconds; no events are missing"
+  },
+  {
+    "id": "SECUROOMS-S5",
+    "name": "New SSO Identity Provider Integration",
+    "qualityAttribute": "Modifiability",
+    "environment": "CI/CD pipeline, enterprise onboarding",
+    "stimulus": "A new enterprise customer requires integration of their own SAML 2.0 identity provider for Single Sign-On",
+    "response": "The SSO integration is configured and deployed without changes to core file management or encryption logic; integration is complete within 2 business days; existing users are unaffected"
+  },
+  {
+    "id": "SECUROOMS-S6",
+    "name": "Data Room Access After Owner Account Deletion",
+    "qualityAttribute": "Availability",
+    "environment": "Production, administrative action",
+    "stimulus": "An admin deletes the sole owner account of an active data room containing critical project files",
+    "response": "The system prevents deletion if no co-owner exists, or automatically reassigns ownership to a designated successor; files remain accessible to authorised members; no data is lost"
+  },
+  {
+    "id": "SECUROOMS-S7",
+    "name": "Automatic Deletion of Expired Data Rooms",
+    "qualityAttribute": "Compliance",
+    "environment": "Production, scheduled job execution",
+    "stimulus": "A configured deletion deadline is reached for a data room containing 10,000 files using up 500 GB",
+    "response": "All files and metadata are deleted within the scheduled maintenance window; affected owners receive a prior notification email; a deletion event is written to the audit log; storage is reclaimed within 24 hours"
+  }
+]

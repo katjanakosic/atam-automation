@@ -1,0 +1,204 @@
+{
+  "id": "securooms-ntier",
+  "domain": "secure-virtual-datarooms",
+  "architecturePattern": "N-Tier Layered Architecture",
+  "patternCharacteristics": {
+    "advantages": [
+      "Simple development and deployment",
+      "Centralized security enforcement",
+      "Straightforward data consistency"
+    ],
+    "disadvantages": [
+      "Large file handling puts strain on the application tier",
+      "Tight layering can introduce latency",
+      "Adding new integrations requires redeployment of the application tier"
+    ]
+  },
+  "components": [
+    {
+      "name": "BrowserSPA",
+      "type": "Presentation Layer",
+      "responsibilities": [
+        "Browser-based UI for data room management, file upload/download, and PDF collaboration",
+        "Client-side E2E encryption and decryption with user's SecuPass key",
+        "Drag-and-drop upload interface and PDF annotation viewer"
+      ],
+      "technologies": ["HTML5", "JavaScript", "WebCrypto API", "Responsive CSS"],
+      "interactsWith": ["ApplicationAPI"]
+    },
+    {
+      "name": "ApplicationAPI",
+      "type": "Application Layer",
+      "responsibilities": [
+        "REST API endpoints for all client operations",
+        "Input validation and request routing",
+        "Orchestrates calls to domain modules",
+        "Session management and token handling"
+      ],
+      "technologies": ["Java", "Spring Boot", "REST"],
+      "interactsWith": ["SecurityModule", "DataRoomModule", "FileModule", "UserModule", "AuditLogger", "NotificationModule"]
+    },
+    {
+      "name": "SecurityModule",
+      "type": "Security Middleware",
+      "responsibilities": [
+        "Authentication",
+        "Authorisation",
+        "SecuPass validation for E2E-encrypted data rooms"
+      ],
+      "technologies": ["Spring Security", "JWT"],
+      "interactsWith": ["IdentityProvider", "UserModule", "AuditLogger"]
+    },
+    {
+      "name": "DataRoomModule",
+      "type": "Domain Module",
+      "responsibilities": [
+        "Create, rename, describe, and delete data rooms",
+        "Manage hierarchical folder structure within data rooms",
+        "Configure deletion deadlines per data room",
+        "Assign and change user roles within a data room",
+        "Enforce room-level encryption settings"
+      ],
+      "technologies": ["Java"],
+      "interactsWith": ["FileModule", "UserModule", "MetadataDB", "AuditLogger"]
+    },
+    {
+      "name": "FileModule",
+      "type": "Domain Module",
+      "responsibilities": [
+        "Handle file upload, download, move, rename, and delete operations",
+        "Manage file versioning and version history",
+        "Trigger virus scanning on upload"
+      ],
+      "technologies": ["Java"],
+      "interactsWith": ["ObjectStorage", "VirusScanner", "DataRoomModule", "AuditLogger"]
+    },
+    {
+      "name": "UserModule",
+      "type": "Domain Module",
+      "responsibilities": [
+        "Manage user accounts",
+        "Handle email-based invitations to data rooms",
+        "Administer SecuPass setup and storage reference"
+      ],
+      "technologies": ["Java"],
+      "interactsWith": ["MetadataDB", "IdentityProvider", "NotificationModule", "AuditLogger"]
+    },
+    {
+      "name": "AuditLogger",
+      "type": "Cross-cutting Component",
+      "responsibilities": [
+        "Record all file uploads, downloads, views, deletions, and permission changes",
+        "Capture user identity and timestamp for every logged event",
+        "Provide audit trail retrieval for data room owners and admins",
+        "Support DSGVO retention and compliance reporting"
+      ],
+      "technologies": ["WORM storage"],
+      "interactsWith": ["AuditLogStore"]
+    },
+    {
+      "name": "NotificationModule",
+      "type": "Domain Module",
+      "responsibilities": [
+        "Send email notifications for new uploads, changes, and permission events",
+        "Send advance warnings before data room deletion deadlines"
+      ],
+      "technologies": ["Java", "SMTP"],
+      "interactsWith": ["MetadataDB", "ExternalMailService"]
+    },
+    {
+      "name": "AdminConsole",
+      "type": "Presentation Layer (Admin)",
+      "responsibilities": [
+        "Web interface for platform administrators",
+        "Overview of all data rooms",
+        "Assign and revoke owner rights across data rooms",
+        "Manage global settings and group permissions"
+      ],
+      "technologies": ["HTML5", "JavaScript"],
+      "interactsWith": ["ApplicationAPI"]
+    },
+    {
+      "name": "MetadataDB",
+      "type": "SQL Database",
+      "responsibilities": [
+        "Store data room metadata, folder structure, user accounts, roles, and group definitions",
+        "Manage file versioning records and deletion deadline configurations"
+      ],
+      "technologies": ["PostgreSQL"],
+      "interactsWith": ["DataRoomModule", "UserModule", "FileModule", "NotificationModule"]
+    },
+    {
+      "name": "ObjectStorage",
+      "type": "File Store",
+      "responsibilities": [
+        "Store encrypted file content",
+        "Support large file storage up to 100 GB per file",
+        "Provide chunked upload and download APIs",
+        "Enforce data residency in German data centres"
+      ],
+      "technologies": ["S3-compatible object storage (German DC)", "AES-256 GCM"],
+      "interactsWith": ["FileModule"]
+    },
+    {
+      "name": "AuditLogStore",
+      "type": "Immutable Log Storage",
+      "responsibilities": [
+        "Support compliance queries and report generation"
+      ],
+      "technologies": ["WORM storage"],
+      "interactsWith": ["AuditLogger"]
+    },
+    {
+      "name": "VirusScanner",
+      "type": "Integration Adapter",
+      "responsibilities": [
+        "Scan uploaded files for malware before making them accessible to users",
+        "Log scan results"
+      ],
+      "technologies": ["G DATA Scanner API"],
+      "interactsWith": ["FileModule"]
+    },
+    {
+      "name": "IdentityProvider",
+      "type": "External System",
+      "responsibilities": [
+        "External SSO authentication source",
+        "2FA token validation"
+      ],
+      "technologies": ["Keycloak"],
+      "interactsWith": ["SecurityModule"]
+    },
+    {
+      "name": "ExternalMailService",
+      "type": "External System",
+      "responsibilities": [
+        "Deliver email notifications to users"
+      ],
+      "technologies": ["SMTP"],
+      "interactsWith": ["NotificationModule"]
+    }
+  ],
+  "infrastructure": [
+    {
+      "name": "AppServerCluster",
+      "type": "Compute",
+      "details": "Horizontally scaled cluster running ApplicationAPI and all domain modules; stateless application tier allows session tokens to be validated on any node"
+    },
+    {
+      "name": "DBCluster",
+      "type": "Database",
+      "details": "PostgreSQL HA cluster with synchronous replication and automatic failover; all data stored in German data centres"
+    },
+    {
+      "name": "ObjectStorageCluster",
+      "type": "Storage",
+      "details": "Object storage with AES-256 GCM encryption; supports chunked uploads for files up to 100 GB; geographically constrained to Germany"
+    },
+    {
+      "name": "TLSTermination",
+      "type": "Network",
+      "details": "TLS termination at load balancer for all client-to-server traffic"
+    }
+  ]
+}

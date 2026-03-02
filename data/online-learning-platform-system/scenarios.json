@@ -1,0 +1,42 @@
+[
+  {
+    "id": "OLP-S01",
+    "name": "Concurrent Enrollment on Popular Course Launch",
+    "qualityAttribute": "Scalability",
+    "environment": "Production during a scheduled course launch event with high anticipated demand",
+    "stimulus": "4,000 users simultaneously attempt to enroll in a newly released course within the first 5 minutes of its availability",
+    "response": "The system auto-scales the EnrollmentService and PaymentService independently, processes all enrollment requests without degradation, and confirms or rejects each enrollment within 3 seconds"
+  },
+  {
+    "id": "OLP-S02",
+    "name": "Last Seat Reservation Race Condition",
+    "qualityAttribute": "Reliability",
+    "environment": "Production under high concurrency during a limited-seat course enrollment window",
+    "stimulus": "200 users simultaneously attempt to enroll in a course with exactly 10 seats remaining",
+    "response": "The system prevents over-enrollment by handling seat reservation atomically via the enrollment saga; exactly 10 enrollments succeed and all others receive a clear seats-unavailable response with no inconsistent state"
+  },
+  {
+    "id": "OLP-S03",
+    "name": "Video Content Delivery Under Peak Load",
+    "qualityAttribute": "Performance",
+    "environment": "Production during a live course session with all enrolled students watching simultaneously",
+    "stimulus": "1,000 enrolled students concurrently request the same lecture video stream",
+    "response": "The system serves video content to 95% of requests within 2 seconds by leveraging the caching layer; MediaService load does not impact EnrollmentService or PaymentService response times"
+  },
+  {
+    "id": "OLP-S04",
+    "name": "Add New Content Type Without Modifying Enrollment",
+    "qualityAttribute": "Modifiability",
+    "environment": "CI/CD pipeline during a scheduled feature release",
+    "stimulus": "The platform adds support for a new content type (live interactive sessions) requiring its own scheduling, capacity management, and access control logic",
+    "response": "The new content type is implemented as an isolated new service and deployed without modifying EnrollmentService, PaymentService, or CourseService; existing enrollments and content types continue to function correctly; deployment completes within 2 days"
+  },
+  {
+    "id": "OLP-S05",
+    "name": "Student Data Access Audit for Compliance Request",
+    "qualityAttribute": "Security",
+    "environment": "Production under a regulatory compliance audit or GDPR data access request",
+    "stimulus": "A compliance officer requests a complete, tamper-evident log of all access to a specific student's personal data, quiz submissions, and payment records over the past 12 months",
+    "response": "All actions are authenticated and authorized via the API Gateway and AuthService; the AuditService returns a complete, immutable log covering all requested events within the retention window; unauthorized access attempts are logged and rejected with a 401 response"
+  }
+]
