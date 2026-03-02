@@ -1,0 +1,30 @@
+[
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attributePositive": "Reliability",
+    "attributeNegative": "Security",
+    "evidence": "+ Reliability: EventBus buffers enrollment spikes ensuring reliable message delivery. | - Security: EventBus may introduce security risks with event publishing"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attributePositive": "Scalability",
+    "attributeNegative": "Security",
+    "evidence": "+ Scalability: Event bus handles high-volume event processing and burst loads | - Security: EventBus may introduce security risks with event publishing"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attributePositive": "Security",
+    "attributeNegative": "Performance",
+    "evidence": "+ Security: Centralized authentication and rate limiting | - Performance: Rate limiting bottleneck under peak load"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attributePositive": "Security",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Security: Centralized authentication and rate limiting | - Reliability: APIGateway rate limiting can impact system responsiveness"
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S04",
+  "qualityAttribute": "Modifiability",
+  "componentImpacts": [
+    {
+      "component": "CourseService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.6,
+          "evidence": [
+            "Course type registry: pre-recorded, live session, assignment"
+          ],
+          "explanation": "isolated new service for new content type"
+        }
+      ]
+    },
+    {
+      "component": "EnrollmentService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Checkout saga orchestration: reserve seat, capture payment, grant course access"
+          ],
+          "explanation": "new content type does not affect existing enrollments"
+        }
+      ]
+    },
+    {
+      "component": "MediaService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "MediaService introduces external dependency latency risk"
+          ],
+          "explanation": "new content type may introduce latency"
+        }
+      ]
+    }
+  ]
+}

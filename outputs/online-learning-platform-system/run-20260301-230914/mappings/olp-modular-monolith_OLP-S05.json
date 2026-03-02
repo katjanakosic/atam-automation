@@ -1,0 +1,70 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S05",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "AuditLogStore",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Tamper-evident retention of all events: enrollment, payment, grade, credential issuance, and access events",
+            "12-month minimum retention for GDPR compliance"
+          ],
+          "explanation": "Immutable log storage for audit trail"
+        }
+      ]
+    },
+    {
+      "component": "LMS",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "JWT-authenticated REST APIs"
+          ],
+          "explanation": "APIs require authentication"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "JWT token validation and enforcement",
+            "Single entry point for all MFE and mobile client requests"
+          ],
+          "explanation": "Centralized authentication and rate limiting"
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.6,
+          "evidence": [
+            "Pub/sub messaging across IDAs",
+            "Buffer enrollment and course update events during launch spikes"
+          ],
+          "explanation": "Decouples components for fault tolerance"
+        }
+      ]
+    }
+  ]
+}

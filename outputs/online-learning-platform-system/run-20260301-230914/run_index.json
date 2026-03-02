@@ -1,0 +1,28 @@
+{
+  "domain": "online-learning-platform-system",
+  "inputs": {
+    "scenarios": "data/online-learning-platform-system/scenarios.json",
+    "architecturesDir": "data/online-learning-platform-system/architectures",
+    "prompt": "atam/prompts/base_scenario_mapping.md"
+  },
+  "llm": {
+    "provider": "openrouter",
+    "ollama": null,
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "model": "llama3.2:3b"
+    }
+  },
+  "outputs": {
+    "mappingsDir": "outputs/online-learning-platform-system/run-20260301-230914/mappings",
+    "sensitivities": "outputs/online-learning-platform-system/run-20260301-230914/metrics/component_sensitivities.json",
+    "tradeoffs": "outputs/online-learning-platform-system/run-20260301-230914/metrics/tradeoffs.json",
+    "summaries": "outputs/online-learning-platform-system/run-20260301-230914/summary/architecture_summaries.json"
+  },
+  "counts": {
+    "scenarios": 5,
+    "architectures": 2,
+    "mappingsExpected": 10,
+    "mappingsProduced": 10
+  }
+}

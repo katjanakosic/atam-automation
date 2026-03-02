@@ -1,0 +1,68 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S04",
+  "qualityAttribute": "Modifiability",
+  "componentImpacts": [
+    {
+      "component": "CMS",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "New content type registration",
+            "Publish course updates to CourseDiscoveryService"
+          ],
+          "explanation": "New content types can be introduced without modifying the core LearningManagementSystem (LMS)"
+        }
+      ]
+    },
+    {
+      "component": "LMS",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Monolith is scaling bottleneck: LMS and ContentManagementSystem (CMS) share the same deployment unit"
+          ],
+          "explanation": "Monolith is a scaling bottleneck"
+        }
+      ]
+    },
+    {
+      "component": "CourseDiscoveryService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.6,
+          "evidence": [
+            "Updated via event bus on CoursePublished events"
+          ],
+          "explanation": "Updated via event bus on CoursePublished events"
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Pub/sub messaging across IDAs"
+          ],
+          "explanation": "Pub/sub messaging across IDAs"
+        }
+      ]
+    }
+  ]
+}

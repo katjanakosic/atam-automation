@@ -1,0 +1,70 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S01",
+  "qualityAttribute": "Scalability",
+  "componentImpacts": [
+    {
+      "component": "EcommerceService",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Independently scalable under enrollment spike",
+            "Publishes successful and failed enrollment event"
+          ],
+          "explanation": "EcommerceService is designed to scale independently and handle high enrollment spikes"
+        }
+      ]
+    },
+    {
+      "component": "CourseDiscoveryService",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Consolidated course and program metadata aggregation",
+            "Course search and filtering"
+          ],
+          "explanation": "CourseDiscoveryService aggregates and searches course metadata, contributing to scalability"
+        }
+      ]
+    },
+    {
+      "component": "LMS",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Monolith is scaling bottleneck: LMS and ContentManagementSystem (CMS) share the same deployment unit"
+          ],
+          "explanation": "LMS is a monolithic component that can become a scaling bottleneck"
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.8,
+          "evidence": [
+            "Pub/sub messaging across IDAs",
+            "Buffer enrollment and course update events during launch spikes"
+          ],
+          "explanation": "EventBus provides pub/sub messaging and event buffering, supporting scalability"
+        }
+      ]
+    }
+  ]
+}

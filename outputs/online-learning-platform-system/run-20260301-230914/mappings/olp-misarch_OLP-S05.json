@@ -1,0 +1,72 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S05",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "AuditService",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Store audit events from all services",
+            "Retain logs for GDPR-required periods",
+            "Expose audit query API for compliance and security review"
+          ],
+          "explanation": "Centralized audit logging and retention support security"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Input sanitization and rate limiting",
+            "OAuth2/JWT for authentication and authorization"
+          ],
+          "explanation": "API Gateway input sanitization and authentication"
+        }
+      ]
+    },
+    {
+      "component": "AuthService",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Authentication",
+            "Role-based Authorization"
+          ],
+          "explanation": "Authentication and authorization support security"
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Publish/subscribe for all domain events",
+            "Buffer enrollment bursts during course launch spike"
+          ],
+          "explanation": "EventBus may introduce security risks with event publishing"
+        }
+      ]
+    }
+  ]
+}

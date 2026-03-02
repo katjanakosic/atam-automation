@@ -1,0 +1,104 @@
+[
+  {
+    "architectureId": "olp-misarch",
+    "topSensitivities": [
+      {
+        "architectureId": "olp-misarch",
+        "component": "AuditService",
+        "attribute": "Security",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "olp-misarch",
+        "component": "EnrollmentService",
+        "attribute": "Scalability",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "olp-misarch",
+        "component": "EnrollmentService",
+        "attribute": "Reliability",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "olp-misarch",
+        "component": "APIGateway",
+        "attribute": "Security",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "olp-misarch",
+        "component": "MediaService",
+        "attribute": "Performance",
+        "sensitivity": 0.42
+      }
+    ],
+    "tradeoffs": [
+      {
+        "architectureId": "olp-misarch",
+        "component": "EventBus",
+        "attributePositive": "Reliability",
+        "attributeNegative": "Security",
+        "evidence": "+ Reliability: EventBus buffers enrollment spikes ensuring reliable message delivery. | - Security: EventBus may introduce security risks with event publishing"
+      },
+      {
+        "architectureId": "olp-misarch",
+        "component": "EventBus",
+        "attributePositive": "Scalability",
+        "attributeNegative": "Security",
+        "evidence": "+ Scalability: Event bus handles high-volume event processing and burst loads | - Security: EventBus may introduce security risks with event publishing"
+      }
+    ]
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "topSensitivities": [
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "APIGateway",
+        "attribute": "Performance",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "AuditLogStore",
+        "attribute": "Security",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "EcommerceService",
+        "attribute": "Scalability",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "LMS",
+        "attribute": "Reliability",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "LMS",
+        "attribute": "Performance",
+        "sensitivity": 0.56
+      }
+    ],
+    "tradeoffs": [
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "APIGateway",
+        "attributePositive": "Security",
+        "attributeNegative": "Performance",
+        "evidence": "+ Security: Centralized authentication and rate limiting | - Performance: Rate limiting bottleneck under peak load"
+      },
+      {
+        "architectureId": "olp-modular-monolith",
+        "component": "APIGateway",
+        "attributePositive": "Security",
+        "attributeNegative": "Reliability",
+        "evidence": "+ Security: Centralized authentication and rate limiting | - Reliability: APIGateway rate limiting can impact system responsiveness"
+      }
+    ]
+  }
+]

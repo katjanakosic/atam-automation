@@ -1,0 +1,53 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S02",
+  "qualityAttribute": "Reliability",
+  "componentImpacts": [
+    {
+      "component": "EnrollmentService",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Concurrency control on seat reservation to prevent over-enrollment",
+            "Publishes successful and failed enrollment events"
+          ],
+          "explanation": "Saga orchestration and event-driven design ensure reliable seat reservation and event publication."
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Buffer enrollment bursts during course launch spike"
+          ],
+          "explanation": "EventBus buffers enrollment spikes ensuring reliable message delivery."
+        }
+      ]
+    },
+    {
+      "component": "CacheLayer",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Cache popular course listings and search results"
+          ],
+          "explanation": "Cache reduces load on CourseDB and SearchIndex during enrollment spikes."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S03",
+  "qualityAttribute": "Performance",
+  "componentImpacts": [
+    {
+      "component": "LMS",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "LMS and CMS share the same deployment unit",
+            "MySQL student data and MongoDB course data require separate consistency strategies"
+          ],
+          "explanation": "Monolith bottleneck under peak load"
+        }
+      ]
+    },
+    {
+      "component": "CourseDiscoveryService",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "CourseDiscovery IDA with Elasticsearch index absorbs high-read course search load"
+          ],
+          "explanation": "Search load absorbed by IDA"
+        }
+      ]
+    },
+    {
+      "component": "EcommerceService",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Independently scalable under enrollment spike"
+          ],
+          "explanation": "Scalable under enrollment spike"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Rate limiting",
+            "Single entry point for all MFE and mobile client requests"
+          ],
+          "explanation": "Rate limiting bottleneck under peak load"
+        }
+      ]
+    }
+  ]
+}

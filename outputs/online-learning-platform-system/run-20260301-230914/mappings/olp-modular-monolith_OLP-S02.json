@@ -1,0 +1,55 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S02",
+  "qualityAttribute": "Reliability",
+  "componentImpacts": [
+    {
+      "component": "LMS",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "LMS is a monolith with MySQL and MongoDB data stores",
+            "Seat availability enforcement is a critical reliability concern"
+          ],
+          "explanation": "LMS monolith bottleneck under high concurrency"
+        }
+      ]
+    },
+    {
+      "component": "EcommerceService",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "EcommerceService is an IDA with MySQL data store",
+            "Independently scalable under enrollment spike"
+          ],
+          "explanation": "EcommerceService can handle enrollment spikes without impacting LMS"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "APIGateway is a single entry point for all MFE and mobile client requests",
+            "Rate limiting can cause delays under high concurrency"
+          ],
+          "explanation": "APIGateway rate limiting can impact system responsiveness"
+        }
+      ]
+    }
+  ]
+}
