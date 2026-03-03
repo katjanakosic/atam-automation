@@ -14,7 +14,7 @@ export default function InputPage() {
       {/* Page header */}
       <div>
         <h2 className="text-2xl font-bold tracking-tight">
-          Input: Online Learning Platform
+          Input Domain: Online Learning Platform
         </h2>
         <p className="text-muted-foreground mt-1">
           The scenarios and candidate architectures provided to the automated

@@ -17,7 +17,7 @@ export default function IntroductionPage() {
           </strong>{" "}
           is a structured methodology for evaluating software architectures
           against quality-attribute requirements. It systematically identifies
-          how architectural decisions affect quality attributes — and where
+          how architectural decisions affect quality attributes and where
           those decisions create tradeoffs between competing concerns.
         </p>
         <p className="text-muted-foreground leading-relaxed">
@@ -57,10 +57,10 @@ export default function IntroductionPage() {
           What Does This Tool Do?
         </h2>
         <p className="text-muted-foreground leading-relaxed">
-          This tool automates the core analytical steps of ATAM using a large
-          language model (LLM). Given a set of quality-attribute scenarios and
+          This tool automates the core analytical steps of ATAM using large
+          language models (LLMs). Given a set of quality-attribute scenarios and
           candidate architecture definitions, it produces structured,
-          evidence-grounded evaluations — replacing a manual expert workshop
+          evidence-grounded evaluations. Thus, it is replacing a manual expert workshop
           with a reproducible pipeline.
         </p>
 
@@ -92,7 +92,7 @@ export default function IntroductionPage() {
           Purpose of This Evaluation
         </h2>
         <p className="text-muted-foreground leading-relaxed">
-          You are being asked to review the automated ATAM analysis as a domain
+          You are being asked to review the automated ATAM pipeline as an architecture
           expert. The following pages will present:
         </p>
         <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
@@ -108,7 +108,7 @@ export default function IntroductionPage() {
           </li>
         </ol>
         <p className="text-muted-foreground leading-relaxed">
-          Your feedback will help validate whether the automated analysis
+          Your feedback will help validate whether the automated pipeline
           produces architecturally sound and useful results compared to a
           traditional expert-driven ATAM workshop.
         </p>

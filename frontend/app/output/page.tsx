@@ -16,7 +16,7 @@ export default function OutputPage() {
           Output: Architecture Summaries
         </h2>
         <p className="text-muted-foreground mt-1">
-          Side-by-side comparison of the automated ATAM analysis results for
+          Side-by-side comparison of the automated ATAM pipeline results for
           each candidate architecture.
         </p>
       </div>

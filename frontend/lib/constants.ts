@@ -85,7 +85,7 @@ export const PIPELINE_STEPS = [
   },
   {
     number: 2,
-    title: "LLM Mapping",
+    title: "Create Scenario x Architecture Mapping",
     description:
       "For each scenario × architecture pair, prompt the LLM to identify impacted components with strength, confidence, effect direction, and grounded evidence.",
   },
