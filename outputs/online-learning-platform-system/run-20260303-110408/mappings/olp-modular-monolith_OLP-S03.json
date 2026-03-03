@@ -1,0 +1,68 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S03",
+  "qualityAttribute": "Performance",
+  "componentImpacts": [
+    {
+      "component": "LMS",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "LMS is a monolith with MySQL and MongoDB databases",
+            "LMS has a shared deployment unit with CMS"
+          ],
+          "explanation": "LMS is a bottleneck under peak load"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "APIGateway has rate limiting and JWT token validation"
+          ],
+          "explanation": "APIGateway helps prevent abuse and denial-of-service"
+        }
+      ]
+    },
+    {
+      "component": "CourseDiscoveryService",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "CourseDiscoveryService uses Elasticsearch for search"
+          ],
+          "explanation": "Elasticsearch improves search performance"
+        }
+      ]
+    },
+    {
+      "component": "CeleryBroker",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.1,
+          "confidence": 0.2,
+          "evidence": [
+            "CeleryBroker introduces latency for grade processing"
+          ],
+          "explanation": "CeleryBroker adds delay to grade processing"
+        }
+      ]
+    }
+  ]
+}

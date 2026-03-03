@@ -1,0 +1,69 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S05",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "APIGateway",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "JWT token validation and enforcement",
+            "Request routing to edx-platform LMS, CMS, and IDAs"
+          ],
+          "explanation": "Validates and enforces JWT tokens for all requests"
+        }
+      ]
+    },
+    {
+      "component": "AuditLogStore",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.6,
+          "evidence": [
+            "Tamper-evident retention of all events: enrollment, payment, grade, credential issuance, and access events"
+          ],
+          "explanation": "Maintains tamper-evident logs for all events"
+        }
+      ]
+    },
+    {
+      "component": "LMS",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.8,
+          "evidence": [
+            "Grade and progress tracking",
+            "JWT-authenticated REST APIs"
+          ],
+          "explanation": "Stores sensitive student data and uses JWT-authenticated APIs"
+        }
+      ]
+    },
+    {
+      "component": "EcommerceService",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.6,
+          "evidence": [
+            "Payment processing"
+          ],
+          "explanation": "Handles sensitive payment information"
+        }
+      ]
+    }
+  ]
+}

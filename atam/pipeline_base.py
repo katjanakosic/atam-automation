@@ -141,7 +141,7 @@ def run_base_pipeline(
     out_root: str | Path = "outputs",
     prompt_path: str | Path = "prompts/base_scenario_mapping.md",
     ollama_host: str = "localhost:8000",
-    model: str = "llama3.2:3b",
+    model: str = "anthropic/claude-haiku-4.5",
     max_retries: int = 2,
     reuse_existing_mappings: bool = True,
     provider: str = "ollama",

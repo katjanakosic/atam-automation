@@ -1,0 +1,68 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S04",
+  "qualityAttribute": "Modifiability",
+  "componentImpacts": [
+    {
+      "component": "CMS",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "New content type registration",
+            "Publish course updates to CourseDiscoveryService"
+          ],
+          "explanation": "New content type registration in CMS without modifying EnrollmentService or PaymentService"
+        }
+      ]
+    },
+    {
+      "component": "LMS",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Monolith is scaling bottleneck: LMS and ContentManagementSystem (CMS) share the same deployment unit"
+          ],
+          "explanation": "LMS's shared deployment unit with CMS limits its modifiability"
+        }
+      ]
+    },
+    {
+      "component": "CourseDiscoveryService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Updated via event bus on CoursePublished events"
+          ],
+          "explanation": "Event-driven updates to CourseDiscoveryService improve its modifiability"
+        }
+      ]
+    },
+    {
+      "component": "EcommerceService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Independently scalable under enrollment spike"
+          ],
+          "explanation": "Independently deployed EcommerceService improves modifiability"
+        }
+      ]
+    }
+  ]
+}

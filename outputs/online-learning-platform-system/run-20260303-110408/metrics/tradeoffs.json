@@ -1,0 +1,114 @@
+[
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attributePositive": "Reliability",
+    "attributeNegative": "Performance",
+    "evidence": "+ Reliability: Publishes events and buffers spikes | - Performance: Buffers enrollment bursts"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attributePositive": "Scalability",
+    "attributeNegative": "Performance",
+    "evidence": "+ Scalability: EventBus can buffer spikes in enrollment requests, helping to prevent system overload. | - Performance: Buffers enrollment bursts"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "APIGateway",
+    "attributePositive": "Scalability",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Scalability: APIGateway's input sanitization, rate limiting, and routing can help prevent system overload and ensure efficient resource allocation. | - Reliability: May introduce bottlenecks under high concurrency"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "APIGateway",
+    "attributePositive": "Security",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Security: Input sanitization and rate limiting | - Reliability: May introduce bottlenecks under high concurrency"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attributePositive": "Performance",
+    "attributeNegative": "Modifiability",
+    "evidence": "+ Performance: Publishes events to reduce load | - Modifiability: Saga orchestration complexity hinders modifiability"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attributePositive": "Performance",
+    "attributeNegative": "Scalability",
+    "evidence": "+ Performance: Publishes events to reduce load | - Scalability: EnrollmentService's concurrency control and saga orchestration may introduce bottlenecks under high load."
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attributePositive": "Reliability",
+    "attributeNegative": "Modifiability",
+    "evidence": "+ Reliability: Prevents over-enrollment and maintains event consistency | - Modifiability: Saga orchestration complexity hinders modifiability"
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attributePositive": "Reliability",
+    "attributeNegative": "Scalability",
+    "evidence": "+ Reliability: Prevents over-enrollment and maintains event consistency | - Scalability: EnrollmentService's concurrency control and saga orchestration may introduce bottlenecks under high load."
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attributePositive": "Modifiability",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Modifiability: Independently deployed EcommerceService improves modifiability | - Reliability: EcommerceService may experience delays or errors during high concurrency, affecting enrollment reliability"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attributePositive": "Modifiability",
+    "attributeNegative": "Security",
+    "evidence": "+ Modifiability: Independently deployed EcommerceService improves modifiability | - Security: Handles sensitive payment information"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attributePositive": "Scalability",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Scalability: EcommerceService can handle high demand independently | - Reliability: EcommerceService may experience delays or errors during high concurrency, affecting enrollment reliability"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attributePositive": "Scalability",
+    "attributeNegative": "Security",
+    "evidence": "+ Scalability: EcommerceService can handle high demand independently | - Security: Handles sensitive payment information"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attributePositive": "Performance",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Performance: APIGateway helps prevent abuse and denial-of-service | - Reliability: APIGateway may experience increased latency or errors during high concurrency, affecting API reliability"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attributePositive": "Performance",
+    "attributeNegative": "Scalability",
+    "evidence": "+ Performance: APIGateway helps prevent abuse and denial-of-service | - Scalability: APIGateway may become bottleneck under high demand"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attributePositive": "Security",
+    "attributeNegative": "Reliability",
+    "evidence": "+ Security: Validates and enforces JWT tokens for all requests | - Reliability: APIGateway may experience increased latency or errors during high concurrency, affecting API reliability"
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attributePositive": "Security",
+    "attributeNegative": "Scalability",
+    "evidence": "+ Security: Validates and enforces JWT tokens for all requests | - Scalability: APIGateway may become bottleneck under high demand"
+  }
+]

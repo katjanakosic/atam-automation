@@ -1,0 +1,72 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S02",
+  "qualityAttribute": "Reliability",
+  "componentImpacts": [
+    {
+      "component": "LMS",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Seat availability enforcement",
+            "Grade and progress tracking",
+            "Content rendering: video, quizzes, assignments"
+          ],
+          "explanation": "LMS handles seat reservation atomically via the enrollment saga, but high concurrency may lead to delays or errors"
+        }
+      ]
+    },
+    {
+      "component": "EcommerceService",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Independently scalable under enrollment spike",
+            "Publishes successful and failed enrollment event"
+          ],
+          "explanation": "EcommerceService may experience delays or errors during high concurrency, affecting enrollment reliability"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Request routing to edx-platform LMS, CMS, and IDAs",
+            "Rate limiting"
+          ],
+          "explanation": "APIGateway may experience increased latency or errors during high concurrency, affecting API reliability"
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Reliability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Pub/sub messaging across IDAs",
+            "Buffer enrollment and course update events during launch spikes"
+          ],
+          "explanation": "EventBus ensures reliable message delivery and buffering during high concurrency"
+        }
+      ]
+    }
+  ]
+}

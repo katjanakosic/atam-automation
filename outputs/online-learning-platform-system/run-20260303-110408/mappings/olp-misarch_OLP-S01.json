@@ -1,0 +1,70 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S01",
+  "qualityAttribute": "Scalability",
+  "componentImpacts": [
+    {
+      "component": "EnrollmentService",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Concurrency control on seat reservation to prevent over-enrollment",
+            "Checkout saga orchestration: reserve seat, capture payment, grant course access"
+          ],
+          "explanation": "EnrollmentService's concurrency control and saga orchestration may introduce bottlenecks under high load."
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Buffer enrollment bursts during course launch spike"
+          ],
+          "explanation": "EventBus can buffer spikes in enrollment requests, helping to prevent system overload."
+        }
+      ]
+    },
+    {
+      "component": "MediaService",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Lecture video/course material storage",
+            "CDN integration for high-throughput video delivery"
+          ],
+          "explanation": "MediaService's video storage and CDN integration may introduce latency under high load."
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Input sanitization and rate limiting",
+            "Routing"
+          ],
+          "explanation": "APIGateway's input sanitization, rate limiting, and routing can help prevent system overload and ensure efficient resource allocation."
+        }
+      ]
+    }
+  ]
+}

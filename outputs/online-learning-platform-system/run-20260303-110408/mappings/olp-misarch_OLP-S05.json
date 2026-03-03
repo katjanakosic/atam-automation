@@ -1,0 +1,56 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S05",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "AuditService",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Store audit events from all services",
+            "Retain logs for GDPR-required periods",
+            "Expose audit query API for compliance and security review"
+          ],
+          "explanation": "Tamper-evident log retention for GDPR compliance"
+        }
+      ]
+    },
+    {
+      "component": "AuthService",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Authentication",
+            "Role-based Authorization"
+          ],
+          "explanation": "Authenticated and authorized via API Gateway and AuthService"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Input sanitization and rate limiting",
+            "OAuth2/JWT"
+          ],
+          "explanation": "Input sanitization and rate limiting"
+        }
+      ]
+    }
+  ]
+}

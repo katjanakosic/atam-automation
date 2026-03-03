@@ -1,0 +1,224 @@
+[
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attribute": "Scalability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attribute": "Scalability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "MediaService",
+    "attribute": "Scalability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "APIGateway",
+    "attribute": "Scalability",
+    "sensitivity": 0.72
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attribute": "Reliability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attribute": "Reliability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "APIGateway",
+    "attribute": "Reliability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "MediaService",
+    "attribute": "Performance",
+    "sensitivity": 0.42
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attribute": "Performance",
+    "sensitivity": 0.18
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "CacheLayer",
+    "attribute": "Performance",
+    "sensitivity": 0.4
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EventBus",
+    "attribute": "Performance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "CourseService",
+    "attribute": "Modifiability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "EnrollmentService",
+    "attribute": "Modifiability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "MediaService",
+    "attribute": "Modifiability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "AuditService",
+    "attribute": "Security",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "AuthService",
+    "attribute": "Security",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-misarch",
+    "component": "APIGateway",
+    "attribute": "Security",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attribute": "Scalability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "CourseDiscoveryService",
+    "attribute": "Scalability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attribute": "Scalability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "LMS",
+    "attribute": "Scalability",
+    "sensitivity": 0.4
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "LMS",
+    "attribute": "Reliability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attribute": "Reliability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attribute": "Reliability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EventBus",
+    "attribute": "Reliability",
+    "sensitivity": 0.72
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "LMS",
+    "attribute": "Performance",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attribute": "Performance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "CourseDiscoveryService",
+    "attribute": "Performance",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "CeleryBroker",
+    "attribute": "Performance",
+    "sensitivity": 0.02
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "CMS",
+    "attribute": "Modifiability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "LMS",
+    "attribute": "Modifiability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "CourseDiscoveryService",
+    "attribute": "Modifiability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attribute": "Modifiability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "APIGateway",
+    "attribute": "Security",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "AuditLogStore",
+    "attribute": "Security",
+    "sensitivity": 0.54
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "LMS",
+    "attribute": "Security",
+    "sensitivity": 0.4
+  },
+  {
+    "architectureId": "olp-modular-monolith",
+    "component": "EcommerceService",
+    "attribute": "Security",
+    "sensitivity": 0.18
+  }
+]

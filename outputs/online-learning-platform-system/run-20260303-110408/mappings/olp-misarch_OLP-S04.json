@@ -1,0 +1,56 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S04",
+  "qualityAttribute": "Modifiability",
+  "componentImpacts": [
+    {
+      "component": "CourseService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Course catalog management: create, update, publish",
+            "Course seat capacity management",
+            "Content type registry: pre-recorded, live session, assignment"
+          ],
+          "explanation": "Modifies course catalog without affecting EnrollmentService"
+        }
+      ]
+    },
+    {
+      "component": "EnrollmentService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Checkout saga orchestration: reserve seat, capture payment, grant course access",
+            "Concurrency control on seat reservation to prevent over-enrollment"
+          ],
+          "explanation": "Saga orchestration complexity hinders modifiability"
+        }
+      ]
+    },
+    {
+      "component": "MediaService",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Lecture video/course material storage",
+            "CDN integration for high-throughput video delivery"
+          ],
+          "explanation": "External dependency latency risk"
+        }
+      ]
+    }
+  ]
+}

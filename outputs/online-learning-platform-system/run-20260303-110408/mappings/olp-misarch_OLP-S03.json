@@ -1,0 +1,68 @@
+{
+  "architectureId": "olp-misarch",
+  "scenarioId": "OLP-S03",
+  "qualityAttribute": "Performance",
+  "componentImpacts": [
+    {
+      "component": "MediaService",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.6,
+          "evidence": [
+            "MediaService introduces external dependency latency risk"
+          ],
+          "explanation": "External dependency latency risk"
+        }
+      ]
+    },
+    {
+      "component": "EnrollmentService",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.6,
+          "evidence": [
+            "Publishes successful and failed enrollment events"
+          ],
+          "explanation": "Publishes events to reduce load"
+        }
+      ]
+    },
+    {
+      "component": "CacheLayer",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.8,
+          "evidence": [
+            "Cache popular course listings and search results",
+            "Reduce load on CourseDB and SearchIndex during enrollment spikes"
+          ],
+          "explanation": "Caches search results to reduce load"
+        }
+      ]
+    },
+    {
+      "component": "EventBus",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Buffer enrollment bursts during course launch spike"
+          ],
+          "explanation": "Buffers enrollment bursts"
+        }
+      ]
+    }
+  ]
+}

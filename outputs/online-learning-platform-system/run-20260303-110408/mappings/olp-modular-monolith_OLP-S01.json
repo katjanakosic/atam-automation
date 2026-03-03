@@ -1,0 +1,71 @@
+{
+  "architectureId": "olp-modular-monolith",
+  "scenarioId": "OLP-S01",
+  "qualityAttribute": "Scalability",
+  "componentImpacts": [
+    {
+      "component": "EcommerceService",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Independently scalable under enrollment spike",
+            "HPA policies for separate deployment"
+          ],
+          "explanation": "EcommerceService can handle high demand independently"
+        }
+      ]
+    },
+    {
+      "component": "CourseDiscoveryService",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Elasticsearch index for course metadata aggregation",
+            "CQRS-style read model"
+          ],
+          "explanation": "CourseDiscoveryService can handle high read load"
+        }
+      ]
+    },
+    {
+      "component": "APIGateway",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Single entry point for all MFE and mobile client requests",
+            "Request routing to multiple services"
+          ],
+          "explanation": "APIGateway may become bottleneck under high demand"
+        }
+      ]
+    },
+    {
+      "component": "LMS",
+      "attribute": "Scalability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.8,
+          "evidence": [
+            "Monolith is scaling bottleneck: LMS and CMS share the same deployment unit",
+            "MySQL student data and MongoDB course data require separate consistency strategies"
+          ],
+          "explanation": "LMS monolith may limit system scalability"
+        }
+      ]
+    }
+  ]
+}
