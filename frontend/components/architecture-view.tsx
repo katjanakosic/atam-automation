@@ -82,9 +82,9 @@ export function ArchitectureView({ architectures }: ArchitectureViewProps) {
                   <TableRow>
                     <TableHead className="w-40">Component</TableHead>
                     <TableHead className="w-25">Type</TableHead>
+                    <TableHead className="w-45">Interacts With</TableHead>
                     <TableHead>Responsibilities</TableHead>
                     <TableHead className="w-40">Technologies</TableHead>
-                    <TableHead className="w-45">Interacts With</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -97,6 +97,19 @@ export function ArchitectureView({ architectures }: ArchitectureViewProps) {
                         <Badge variant="secondary" className="text-xs">
                           {comp.type}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {comp.interactsWith.map((iw) => (
+                            <Badge
+                              key={iw}
+                              variant="secondary"
+                              className="text-xs font-normal"
+                            >
+                              {iw}
+                            </Badge>
+                          ))}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <ul className="list-disc list-inside text-sm space-y-0.5">
@@ -114,19 +127,6 @@ export function ArchitectureView({ architectures }: ArchitectureViewProps) {
                               className="text-xs"
                             >
                               {t}
-                            </Badge>
-                          ))}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {comp.interactsWith.map((iw) => (
-                            <Badge
-                              key={iw}
-                              variant="secondary"
-                              className="text-xs font-normal"
-                            >
-                              {iw}
                             </Badge>
                           ))}
                         </div>

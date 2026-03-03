@@ -29,16 +29,6 @@ export default function OutputPage() {
             <Badge variant="secondary">{runIndex.domain}</Badge>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-muted-foreground">Model:</span>
-            <Badge variant="secondary">
-              {runIndex.llm.openrouter?.model ?? "unknown"}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-muted-foreground">Provider:</span>
-            <Badge variant="secondary">{runIndex.llm.provider}</Badge>
-          </div>
-          <div className="flex items-center gap-1.5">
             <span className="text-muted-foreground">Scenarios:</span>
             <Badge variant="outline">{runIndex.counts.scenarios}</Badge>
           </div>
