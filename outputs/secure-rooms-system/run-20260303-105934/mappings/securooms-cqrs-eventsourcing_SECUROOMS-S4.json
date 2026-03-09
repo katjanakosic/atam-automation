@@ -1,0 +1,55 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S4",
+  "qualityAttribute": "Auditability",
+  "componentImpacts": [
+    {
+      "component": "AuditEventStore",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Immutable storage of all domain events in sequence",
+            "A -> AuditEventStore -> ProjectionEngine"
+          ],
+          "explanation": "Stores all events in sequence, enabling complete audit trail"
+        }
+      ]
+    },
+    {
+      "component": "FileCommandHandler",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Writes resulting domain events: FileUploaded, FileDeleted, FileMoved",
+            "A -> FileCommandHandler -> AuditEventStore"
+          ],
+          "explanation": "Writes relevant events to the event store"
+        }
+      ]
+    },
+    {
+      "component": "NotificationService",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Subscribe to domain events",
+            "A -> NotificationService -> ExternalMailService"
+          ],
+          "explanation": "May miss events if notification service is down"
+        }
+      ]
+    }
+  ]
+}

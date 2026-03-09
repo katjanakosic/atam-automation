@@ -9,8 +9,8 @@ import type {
   RunIndex,
 } from "./types"
 
-const DOMAIN = "online-learning-platform-system"
-const RUN = "run-20260303-110408"
+const DOMAIN = "secure-rooms-system"
+const RUN = "run-20260303-105934"
 
 const DATA_DIR = path.join(process.cwd(), "..", "data", DOMAIN)
 const OUTPUT_DIR = path.join(process.cwd(), "..", "outputs", DOMAIN, RUN)

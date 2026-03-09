@@ -1,0 +1,320 @@
+[
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "FileCommandHandler",
+    "attribute": "Performance",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "CommandAPI",
+    "attribute": "Performance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "ProjectionEngine",
+    "attribute": "Performance",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "ObjectStorage",
+    "attribute": "Performance",
+    "sensitivity": 0.72
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "AuditEventStore",
+    "attribute": "Performance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "BrowserSPA",
+    "attribute": "Security",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "CommandAPI",
+    "attribute": "Security",
+    "sensitivity": 0.49
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "AuditEventStore",
+    "attribute": "Security",
+    "sensitivity": 0.63
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "FileCommandHandler",
+    "attribute": "Security",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "AccessCommandHandler",
+    "attribute": "Security",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "QueryAPI",
+    "attribute": "Security",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "AuditEventStore",
+    "attribute": "Auditability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "FileCommandHandler",
+    "attribute": "Auditability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "NotificationService",
+    "attribute": "Auditability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "CommandAPI",
+    "attribute": "Modifiability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "QueryAPI",
+    "attribute": "Modifiability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "FileCommandHandler",
+    "attribute": "Modifiability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "ProjectionEngine",
+    "attribute": "Modifiability",
+    "sensitivity": 0.72
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "CommandAPI",
+    "attribute": "Availability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "FileCommandHandler",
+    "attribute": "Availability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "AuditEventStore",
+    "attribute": "Availability",
+    "sensitivity": 0.54
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "ProjectionEngine",
+    "attribute": "Availability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "FileCommandHandler",
+    "attribute": "Compliance",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "RoomCommandHandler",
+    "attribute": "Compliance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "AuditEventStore",
+    "attribute": "Compliance",
+    "sensitivity": 0.72
+  },
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "component": "NotificationService",
+    "attribute": "Compliance",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "FileModule",
+    "attribute": "Performance",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "ObjectStorage",
+    "attribute": "Performance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "ApplicationAPI",
+    "attribute": "Performance",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "BrowserSPA",
+    "attribute": "Performance",
+    "sensitivity": 0.02
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "SecurityModule",
+    "attribute": "Security",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "ApplicationAPI",
+    "attribute": "Security",
+    "sensitivity": 0.51
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "AuditLogger",
+    "attribute": "Security",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "BrowserSPA",
+    "attribute": "Security",
+    "sensitivity": 0.54
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "DataRoomModule",
+    "attribute": "Security",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "AuditLogger",
+    "attribute": "Auditability",
+    "sensitivity": 0.72
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "DataRoomModule",
+    "attribute": "Auditability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "SecurityModule",
+    "attribute": "Auditability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "FileModule",
+    "attribute": "Auditability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "MetadataDB",
+    "attribute": "Auditability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "ApplicationAPI",
+    "attribute": "Modifiability",
+    "sensitivity": 0.42
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "DataRoomModule",
+    "attribute": "Modifiability",
+    "sensitivity": 0.4
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "SecurityModule",
+    "attribute": "Modifiability",
+    "sensitivity": 0.18
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "FileModule",
+    "attribute": "Modifiability",
+    "sensitivity": 0.4
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "DataRoomModule",
+    "attribute": "Availability",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "FileModule",
+    "attribute": "Availability",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "SecurityModule",
+    "attribute": "Availability",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "AuditLogger",
+    "attribute": "Availability",
+    "sensitivity": 0.02
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "DataRoomModule",
+    "attribute": "Compliance",
+    "sensitivity": 0.56
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "AuditLogger",
+    "attribute": "Compliance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "NotificationModule",
+    "attribute": "Compliance",
+    "sensitivity": 0.12
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "SecurityModule",
+    "attribute": "Compliance",
+    "sensitivity": 0.3
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "component": "FileModule",
+    "attribute": "Compliance",
+    "sensitivity": 0.12
+  }
+]

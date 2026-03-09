@@ -1,0 +1,69 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S3",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "CommandAPI",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Authenticate and authorise each command",
+            "JWT"
+          ],
+          "explanation": "Strong authentication and authorisation at the CommandAPI gate"
+        }
+      ]
+    },
+    {
+      "component": "AccessCommandHandler",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Write AccessGranted, AccessRevoked, RoleChanged, UserInvited events to Event Store"
+          ],
+          "explanation": "Potential for unauthorised role changes"
+        }
+      ]
+    },
+    {
+      "component": "AuditEventStore",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Immutable storage of all domain events in sequence",
+            "WORM storage"
+          ],
+          "explanation": "Tamper-evident event log for auditing and forensics"
+        }
+      ]
+    },
+    {
+      "component": "QueryAPI",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Enforce read-side authorisation"
+          ],
+          "explanation": "Basic read-side access control"
+        }
+      ]
+    }
+  ]
+}

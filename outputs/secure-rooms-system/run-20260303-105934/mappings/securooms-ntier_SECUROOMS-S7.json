@@ -1,0 +1,83 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S7",
+  "qualityAttribute": "Compliance",
+  "componentImpacts": [
+    {
+      "component": "DataRoomModule",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Configure deletion deadlines per data room",
+            "Enforce room-level encryption settings"
+          ],
+          "explanation": "Configured deletion deadlines and encryption settings support compliance"
+        }
+      ]
+    },
+    {
+      "component": "AuditLogger",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Record all file uploads, downloads, views, deletions, and permission changes"
+          ],
+          "explanation": "Audit logging supports compliance reporting"
+        }
+      ]
+    },
+    {
+      "component": "NotificationModule",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Send advance warnings before data room deletion deadlines"
+          ],
+          "explanation": "Notification of deletion deadlines supports compliance"
+        }
+      ]
+    },
+    {
+      "component": "SecurityModule",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "SecuPass validation for E2E-encrypted data rooms"
+          ],
+          "explanation": "SecuPass validation may introduce compliance risks"
+        }
+      ]
+    },
+    {
+      "component": "FileModule",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Manage file versioning and version history"
+          ],
+          "explanation": "File versioning may introduce compliance complexities"
+        }
+      ]
+    }
+  ]
+}

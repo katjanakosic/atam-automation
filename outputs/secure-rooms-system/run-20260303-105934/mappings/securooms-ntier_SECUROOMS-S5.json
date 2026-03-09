@@ -1,0 +1,69 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S5",
+  "qualityAttribute": "Modifiability",
+  "componentImpacts": [
+    {
+      "component": "ApplicationAPI",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.6,
+          "evidence": [
+            "Adding new integrations requires redeployment of the application tier"
+          ],
+          "explanation": "Adding new integrations requires redeployment of the application tier"
+        }
+      ]
+    },
+    {
+      "component": "DataRoomModule",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.8,
+          "evidence": [
+            "Manage hierarchical folder structure within data rooms",
+            "Configure deletion deadlines per data room"
+          ],
+          "explanation": "Data room configuration is tightly coupled to the module"
+        }
+      ]
+    },
+    {
+      "component": "SecurityModule",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.6,
+          "evidence": [
+            "SecuPass validation for E2E-encrypted data rooms"
+          ],
+          "explanation": "Security module tightly coupled to encryption logic"
+        }
+      ]
+    },
+    {
+      "component": "FileModule",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.8,
+          "evidence": [
+            "Manage file versioning and version history",
+            "Trigger virus scanning on upload"
+          ],
+          "explanation": "File module tightly coupled to file handling and virus scanning"
+        }
+      ]
+    }
+  ]
+}

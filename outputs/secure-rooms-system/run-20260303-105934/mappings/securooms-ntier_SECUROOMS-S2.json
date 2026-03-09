@@ -1,0 +1,71 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S2",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "SecurityModule",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "SecuPass validation for E2E-encrypted data rooms",
+            "Authentication",
+            "Authorisation"
+          ],
+          "explanation": "Validates SecuPass key for E2E-encrypted data rooms"
+        }
+      ]
+    },
+    {
+      "component": "ApplicationAPI",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Session management and token handling",
+            "Input validation and request routing"
+          ],
+          "explanation": "Handles stolen session tokens"
+        }
+      ]
+    },
+    {
+      "component": "AuditLogger",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Record all file uploads, downloads, views, deletions, and permission changes",
+            "Capture user identity and timestamp for every logged event"
+          ],
+          "explanation": "Logs access attempts and user identities"
+        }
+      ]
+    },
+    {
+      "component": "BrowserSPA",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.6,
+          "evidence": [
+            "Client-side E2E encryption and decryption with user's SecuPass key"
+          ],
+          "explanation": "Encrypts and decrypts data client-side"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S4",
+  "qualityAttribute": "Auditability",
+  "componentImpacts": [
+    {
+      "component": "AuditLogger",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Record all file uploads, downloads, views, deletions, and permission changes",
+            "Capture user identity and timestamp for every logged event"
+          ],
+          "explanation": "Central audit logging and event recording"
+        }
+      ]
+    },
+    {
+      "component": "DataRoomModule",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Enforce room-level encryption settings",
+            "Interacts with AuditLogger"
+          ],
+          "explanation": "Data room encryption and logging"
+        }
+      ]
+    },
+    {
+      "component": "SecurityModule",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Interacts with AuditLogger"
+          ],
+          "explanation": "Authentication and authorization logging"
+        }
+      ]
+    },
+    {
+      "component": "FileModule",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Interacts with AuditLogger"
+          ],
+          "explanation": "File upload and download logging"
+        }
+      ]
+    },
+    {
+      "component": "MetadataDB",
+      "attribute": "Auditability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Manage file versioning records and deletion deadline configurations"
+          ],
+          "explanation": "Metadata storage may limit audit trail completeness"
+        }
+      ]
+    }
+  ]
+}

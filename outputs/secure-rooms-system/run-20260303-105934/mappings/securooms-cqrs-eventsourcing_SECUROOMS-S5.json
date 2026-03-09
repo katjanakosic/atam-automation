@@ -1,0 +1,70 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S5",
+  "qualityAttribute": "Modifiability",
+  "componentImpacts": [
+    {
+      "component": "CommandAPI",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Authenticate and authorise each command",
+            "Route validated commands to the Command Bus"
+          ],
+          "explanation": "Tight coupling to Command Bus and IdentityProvider"
+        }
+      ]
+    },
+    {
+      "component": "QueryAPI",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Serve all read-only queries",
+            "Enforce read-side authorisation"
+          ],
+          "explanation": "Decoupled from CommandAPI and IdentityProvider"
+        }
+      ]
+    },
+    {
+      "component": "FileCommandHandler",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Validates domain invariants: file size ≤ 100 GB, room capacity"
+          ],
+          "explanation": "Tight coupling to ObjectStorage and VirusScanner"
+        }
+      ]
+    },
+    {
+      "component": "ProjectionEngine",
+      "attribute": "Modifiability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Subscription to the live event feed from the Event Store",
+            "Maintain multiple denormalized read models"
+          ],
+          "explanation": "Centralised event handling and read model management"
+        }
+      ]
+    }
+  ]
+}

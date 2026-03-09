@@ -1,0 +1,28 @@
+{
+  "domain": "secure-rooms-system",
+  "inputs": {
+    "scenarios": "data/secure-rooms-system/scenarios.json",
+    "architecturesDir": "data/secure-rooms-system/architectures",
+    "prompt": "atam/prompts/base_scenario_mapping.md"
+  },
+  "llm": {
+    "provider": "openrouter",
+    "ollama": null,
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "model": "anthropic/claude-haiku-4.5"
+    }
+  },
+  "outputs": {
+    "mappingsDir": "outputs/secure-rooms-system/run-20260303-105934/mappings",
+    "sensitivities": "outputs/secure-rooms-system/run-20260303-105934/metrics/component_sensitivities.json",
+    "tradeoffs": "outputs/secure-rooms-system/run-20260303-105934/metrics/tradeoffs.json",
+    "summaries": "outputs/secure-rooms-system/run-20260303-105934/summary/architecture_summaries.json"
+  },
+  "counts": {
+    "scenarios": 7,
+    "architectures": 2,
+    "mappingsExpected": 14,
+    "mappingsProduced": 14
+  }
+}

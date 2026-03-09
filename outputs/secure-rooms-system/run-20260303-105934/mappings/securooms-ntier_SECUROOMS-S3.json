@@ -1,0 +1,71 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S3",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "SecurityModule",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "SecuPass validation for E2E-encrypted data rooms",
+            "Authentication",
+            "Authorisation"
+          ],
+          "explanation": "Validates SecuPass keys for E2E-encrypted data rooms"
+        }
+      ]
+    },
+    {
+      "component": "DataRoomModule",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Assign and change user roles within a data room",
+            "Enforce room-level encryption settings"
+          ],
+          "explanation": "May allow downgraded users to retain access to data rooms"
+        }
+      ]
+    },
+    {
+      "component": "AuditLogger",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Record all file uploads, downloads, views, deletions, and permission changes"
+          ],
+          "explanation": "Logs all access and permission changes"
+        }
+      ]
+    },
+    {
+      "component": "ApplicationAPI",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "REST API endpoints for all client operations",
+            "Input validation and request routing"
+          ],
+          "explanation": "May allow downgraded users to retain access to API endpoints"
+        }
+      ]
+    }
+  ]
+}

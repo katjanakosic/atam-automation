@@ -1,0 +1,71 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S7",
+  "qualityAttribute": "Compliance",
+  "componentImpacts": [
+    {
+      "component": "FileCommandHandler",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Validates domain invariants: file size ≤ 100 GB, room capacity",
+            "Writes resulting domain events: FileUploaded, FileDeleted, FileMoved"
+          ],
+          "explanation": "Validates file size and room capacity"
+        }
+      ]
+    },
+    {
+      "component": "RoomCommandHandler",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Enforce that only room owners can delete/configure rooms",
+            "Write RoomCreated, RoomDeleted, RoomRenamed, DeletionDeadlineSet events to Event Store"
+          ],
+          "explanation": "Enforces room ownership"
+        }
+      ]
+    },
+    {
+      "component": "AuditEventStore",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Immutable storage of all domain events in sequence",
+            "Durable, ordered, append-only event log with WORM retention"
+          ],
+          "explanation": "Maintains immutable event log"
+        }
+      ]
+    },
+    {
+      "component": "NotificationService",
+      "attribute": "Compliance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Send email notifications to relevant users",
+            "Subscribe to domain events"
+          ],
+          "explanation": "May introduce notification delays"
+        }
+      ]
+    }
+  ]
+}

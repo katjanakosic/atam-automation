@@ -1,0 +1,67 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S2",
+  "qualityAttribute": "Security",
+  "componentImpacts": [
+    {
+      "component": "BrowserSPA",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Client-side E2E encryption and decryption with SecuPass key"
+          ],
+          "explanation": "E2E encryption vulnerable to stolen SecuPass key"
+        }
+      ]
+    },
+    {
+      "component": "CommandAPI",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.6,
+          "evidence": [
+            "Authenticate and authorise each command"
+          ],
+          "explanation": "Stolen session token bypasses authentication"
+        }
+      ]
+    },
+    {
+      "component": "AuditEventStore",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.6,
+          "evidence": [
+            "Immutable storage of all domain events in sequence"
+          ],
+          "explanation": "Event Store as single source of truth for domain state"
+        }
+      ]
+    },
+    {
+      "component": "FileCommandHandler",
+      "attribute": "Security",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Triggers virus scanner before emitting FileUploaded event"
+          ],
+          "explanation": "Virus scanner delay in FileUploaded event emission"
+        }
+      ]
+    }
+  ]
+}

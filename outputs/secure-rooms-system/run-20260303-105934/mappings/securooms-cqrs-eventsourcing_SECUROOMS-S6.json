@@ -1,0 +1,68 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S6",
+  "qualityAttribute": "Availability",
+  "componentImpacts": [
+    {
+      "component": "CommandAPI",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Authenticate and authorise each command",
+            "Route validated commands to the Command Bus"
+          ],
+          "explanation": "Authentication and validation may introduce delays"
+        }
+      ]
+    },
+    {
+      "component": "FileCommandHandler",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Triggers virus scanner before emitting FileUploaded event"
+          ],
+          "explanation": "Virus scanning may introduce delays"
+        }
+      ]
+    },
+    {
+      "component": "AuditEventStore",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.9,
+          "confidence": 0.6,
+          "evidence": [
+            "Immutable storage of all domain events in sequence"
+          ],
+          "explanation": "Immutable event store ensures availability"
+        }
+      ]
+    },
+    {
+      "component": "ProjectionEngine",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Subscription to the live event feed from the Event Store"
+          ],
+          "explanation": "Event store subscription may introduce delays"
+        }
+      ]
+    }
+  ]
+}

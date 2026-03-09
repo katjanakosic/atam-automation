@@ -1,0 +1,69 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S6",
+  "qualityAttribute": "Availability",
+  "componentImpacts": [
+    {
+      "component": "DataRoomModule",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Manage file versioning records and deletion deadline configurations",
+            "DataRoomModule -> FileModule -> ObjectStorage"
+          ],
+          "explanation": "Data room deletion deadlines can lead to unavailability"
+        }
+      ]
+    },
+    {
+      "component": "FileModule",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Handle file upload, download, move, rename, and delete operations",
+            "FileModule -> ObjectStorage"
+          ],
+          "explanation": "File handling can lead to unavailability"
+        }
+      ]
+    },
+    {
+      "component": "SecurityModule",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "SecuPass validation for E2E-encrypted data rooms"
+          ],
+          "explanation": "SecuPass validation ensures availability"
+        }
+      ]
+    },
+    {
+      "component": "AuditLogger",
+      "attribute": "Availability",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.1,
+          "confidence": 0.2,
+          "evidence": [
+            "Record all file uploads, downloads, views, deletions, and permission changes"
+          ],
+          "explanation": "Audit logging can lead to unavailability"
+        }
+      ]
+    }
+  ]
+}

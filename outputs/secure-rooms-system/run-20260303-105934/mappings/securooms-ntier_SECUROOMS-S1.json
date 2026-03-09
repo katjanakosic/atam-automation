@@ -1,0 +1,72 @@
+{
+  "architectureId": "securooms-ntier",
+  "scenarioId": "SECUROOMS-S1",
+  "qualityAttribute": "Performance",
+  "componentImpacts": [
+    {
+      "component": "FileModule",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Handle file upload, download, move, rename, and delete operations",
+            "Manage file versioning and version history",
+            "Trigger virus scanning on upload"
+          ],
+          "explanation": "FileModule's file handling puts strain on the application tier"
+        }
+      ]
+    },
+    {
+      "component": "ObjectStorage",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Store encrypted file content",
+            "Support large file storage up to 100 GB per file"
+          ],
+          "explanation": "ObjectStorage's large file handling may impact performance under high concurrent load"
+        }
+      ]
+    },
+    {
+      "component": "ApplicationAPI",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "REST API endpoints for all client operations",
+            "Input validation and request routing",
+            "Orchestrates calls to domain modules"
+          ],
+          "explanation": "ApplicationAPI's orchestration of calls to domain modules may introduce latency"
+        }
+      ]
+    },
+    {
+      "component": "BrowserSPA",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.1,
+          "confidence": 0.2,
+          "evidence": [
+            "Browser-based UI for data room management, file upload/download, and PDF collaboration"
+          ],
+          "explanation": "BrowserSPA's UI may introduce minor performance overhead"
+        }
+      ]
+    }
+  ]
+}

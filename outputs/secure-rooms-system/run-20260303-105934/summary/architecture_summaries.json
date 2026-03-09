@@ -1,0 +1,335 @@
+[
+  {
+    "architectureId": "securooms-cqrs-eventsourcing",
+    "topSensitivities": [
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "ObjectStorage",
+        "attribute": "Performance",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "ProjectionEngine",
+        "attribute": "Modifiability",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "AuditEventStore",
+        "attribute": "Compliance",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "AuditEventStore",
+        "attribute": "Security",
+        "sensitivity": 0.63
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attribute": "Performance",
+        "sensitivity": 0.56
+      }
+    ],
+    "tradeoffs": [
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "ProjectionEngine",
+        "attributePositive": "Modifiability",
+        "attributeNegative": "Availability",
+        "evidence": "+ Modifiability: Centralised event handling and read model management | - Availability: Event store subscription may introduce delays"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "ProjectionEngine",
+        "attributePositive": "Performance",
+        "attributeNegative": "Availability",
+        "evidence": "+ Performance: Caching read models can improve query performance | - Availability: Event store subscription may introduce delays"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "CommandAPI",
+        "attributePositive": "Security",
+        "attributeNegative": "Availability",
+        "evidence": "+ Security: Strong authentication and authorisation at the CommandAPI gate | - Availability: Authentication and validation may introduce delays"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "CommandAPI",
+        "attributePositive": "Security",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Security: Strong authentication and authorisation at the CommandAPI gate | - Modifiability: Tight coupling to Command Bus and IdentityProvider"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "CommandAPI",
+        "attributePositive": "Security",
+        "attributeNegative": "Performance",
+        "evidence": "+ Security: Strong authentication and authorisation at the CommandAPI gate | - Performance: Authentication and routing can add latency"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "AuditEventStore",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Performance",
+        "evidence": "+ Auditability: Stores all events in sequence, enabling complete audit trail | - Performance: Writing and storing events can be slow under high load"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "AuditEventStore",
+        "attributePositive": "Availability",
+        "attributeNegative": "Performance",
+        "evidence": "+ Availability: Immutable event store ensures availability | - Performance: Writing and storing events can be slow under high load"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "AuditEventStore",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Performance",
+        "evidence": "+ Compliance: Maintains immutable event log | - Performance: Writing and storing events can be slow under high load"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "AuditEventStore",
+        "attributePositive": "Security",
+        "attributeNegative": "Performance",
+        "evidence": "+ Security: Event Store as single source of truth for domain state | - Performance: Writing and storing events can be slow under high load"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Availability",
+        "evidence": "+ Auditability: Writes relevant events to the event store | - Availability: Virus scanning may introduce delays"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Auditability: Writes relevant events to the event store | - Modifiability: Tight coupling to ObjectStorage and VirusScanner"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Performance",
+        "evidence": "+ Auditability: Writes relevant events to the event store | - Performance: Validation and event writing can slow down under concurrent load"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Security",
+        "evidence": "+ Auditability: Writes relevant events to the event store | - Security: Virus scanner delay in FileUploaded event emission"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Availability",
+        "evidence": "+ Compliance: Validates file size and room capacity | - Availability: Virus scanning may introduce delays"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Compliance: Validates file size and room capacity | - Modifiability: Tight coupling to ObjectStorage and VirusScanner"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Performance",
+        "evidence": "+ Compliance: Validates file size and room capacity | - Performance: Validation and event writing can slow down under concurrent load"
+      },
+      {
+        "architectureId": "securooms-cqrs-eventsourcing",
+        "component": "FileCommandHandler",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Security",
+        "evidence": "+ Compliance: Validates file size and room capacity | - Security: Virus scanner delay in FileUploaded event emission"
+      }
+    ]
+  },
+  {
+    "architectureId": "securooms-ntier",
+    "topSensitivities": [
+      {
+        "architectureId": "securooms-ntier",
+        "component": "AuditLogger",
+        "attribute": "Auditability",
+        "sensitivity": 0.72
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "FileModule",
+        "attribute": "Performance",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attribute": "Security",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attribute": "Auditability",
+        "sensitivity": 0.56
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attribute": "Availability",
+        "sensitivity": 0.56
+      }
+    ],
+    "tradeoffs": [
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Compliance",
+        "evidence": "+ Auditability: Authentication and authorization logging | - Compliance: SecuPass validation may introduce compliance risks"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Auditability: Authentication and authorization logging | - Modifiability: Security module tightly coupled to encryption logic"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attributePositive": "Availability",
+        "attributeNegative": "Compliance",
+        "evidence": "+ Availability: SecuPass validation ensures availability | - Compliance: SecuPass validation may introduce compliance risks"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attributePositive": "Availability",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Availability: SecuPass validation ensures availability | - Modifiability: Security module tightly coupled to encryption logic"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attributePositive": "Security",
+        "attributeNegative": "Compliance",
+        "evidence": "+ Security: Validates SecuPass key for E2E-encrypted data rooms | - Compliance: SecuPass validation may introduce compliance risks"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "SecurityModule",
+        "attributePositive": "Security",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Security: Validates SecuPass key for E2E-encrypted data rooms | - Modifiability: Security module tightly coupled to encryption logic"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "AuditLogger",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Availability",
+        "evidence": "+ Auditability: Central audit logging and event recording | - Availability: Audit logging can lead to unavailability"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "AuditLogger",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Availability",
+        "evidence": "+ Compliance: Audit logging supports compliance reporting | - Availability: Audit logging can lead to unavailability"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "AuditLogger",
+        "attributePositive": "Security",
+        "attributeNegative": "Availability",
+        "evidence": "+ Security: Logs access attempts and user identities | - Availability: Audit logging can lead to unavailability"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "BrowserSPA",
+        "attributePositive": "Security",
+        "attributeNegative": "Performance",
+        "evidence": "+ Security: Encrypts and decrypts data client-side | - Performance: BrowserSPA's UI may introduce minor performance overhead"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Availability",
+        "evidence": "+ Auditability: Data room encryption and logging | - Availability: Data room deletion deadlines can lead to unavailability"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Auditability: Data room encryption and logging | - Modifiability: Data room configuration is tightly coupled to the module"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Security",
+        "evidence": "+ Auditability: Data room encryption and logging | - Security: May allow downgraded users to retain access to data rooms"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Availability",
+        "evidence": "+ Compliance: Configured deletion deadlines and encryption settings support compliance | - Availability: Data room deletion deadlines can lead to unavailability"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Compliance: Configured deletion deadlines and encryption settings support compliance | - Modifiability: Data room configuration is tightly coupled to the module"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "DataRoomModule",
+        "attributePositive": "Compliance",
+        "attributeNegative": "Security",
+        "evidence": "+ Compliance: Configured deletion deadlines and encryption settings support compliance | - Security: May allow downgraded users to retain access to data rooms"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "FileModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Availability",
+        "evidence": "+ Auditability: File upload and download logging | - Availability: File handling can lead to unavailability"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "FileModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Compliance",
+        "evidence": "+ Auditability: File upload and download logging | - Compliance: File versioning may introduce compliance complexities"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "FileModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Modifiability",
+        "evidence": "+ Auditability: File upload and download logging | - Modifiability: File module tightly coupled to file handling and virus scanning"
+      },
+      {
+        "architectureId": "securooms-ntier",
+        "component": "FileModule",
+        "attributePositive": "Auditability",
+        "attributeNegative": "Performance",
+        "evidence": "+ Auditability: File upload and download logging | - Performance: FileModule's file handling puts strain on the application tier"
+      }
+    ]
+  }
+]

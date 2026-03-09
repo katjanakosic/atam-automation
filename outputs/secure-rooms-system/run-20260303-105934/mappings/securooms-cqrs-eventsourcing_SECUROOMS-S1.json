@@ -1,0 +1,86 @@
+{
+  "architectureId": "securooms-cqrs-eventsourcing",
+  "scenarioId": "SECUROOMS-S1",
+  "qualityAttribute": "Performance",
+  "componentImpacts": [
+    {
+      "component": "FileCommandHandler",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.7,
+          "confidence": 0.8,
+          "evidence": [
+            "Validates domain invariants: file size ≤ 100 GB, room capacity",
+            "Writes resulting domain events: FileUploaded, FileDeleted, FileMoved",
+            "FileCommandHandler -> AuditEventStore -> ProjectionEngine"
+          ],
+          "explanation": "Validation and event writing can slow down under concurrent load"
+        }
+      ]
+    },
+    {
+      "component": "CommandAPI",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Authenticate and authorise each command",
+            "Route validated commands to the Command Bus"
+          ],
+          "explanation": "Authentication and routing can add latency"
+        }
+      ]
+    },
+    {
+      "component": "ProjectionEngine",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "positive",
+          "strength": 0.3,
+          "confidence": 0.4,
+          "evidence": [
+            "Maintain multiple denormalized read models"
+          ],
+          "explanation": "Caching read models can improve query performance"
+        }
+      ]
+    },
+    {
+      "component": "ObjectStorage",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.9,
+          "confidence": 0.8,
+          "evidence": [
+            "Store encrypted file binary content",
+            "Support chunked upload for files up to 100 GB"
+          ],
+          "explanation": "Large file uploads can be slow due to chunking and encryption"
+        }
+      ]
+    },
+    {
+      "component": "AuditEventStore",
+      "attribute": "Performance",
+      "effects": [
+        {
+          "effectSign": "negative",
+          "strength": 0.5,
+          "confidence": 0.6,
+          "evidence": [
+            "Immutable storage of all domain events in sequence"
+          ],
+          "explanation": "Writing and storing events can be slow under high load"
+        }
+      ]
+    }
+  ]
+}
