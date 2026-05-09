@@ -62,7 +62,7 @@ def _calibrate_effect(effect) -> None:
     - confidence is downgraded if evidence does not justify the level
     :param effect: effect to enforce
     """
-    # snap to discrete sets (in case a model outputs 0.73, etc.)
+    # snap to discrete sets
     try:
         effect.strength = _nearest_allowed(effect.strength, ALLOWED_STRENGTH)
     except Exception:
